@@ -44,5 +44,17 @@ namespace randomImage
         {
             return "(" + x + ", " + y + ", " + z + ")";
         }
+
+        public static double magnitude(Vector a) {
+            return Math.Sqrt(Math.Pow(a.x, 2) + Math.Pow(a.y, 2) + Math.Pow(a.z, 2));
+        }
+
+        public static double recMagnitude(Vector a) {
+            return (1 / magnitude(a));
+        }
+
+        public static Vector unitVector(Vector a) {
+            return new Vector(a.x * recMagnitude(a), a.y * recMagnitude(a), a.z * recMagnitude(a));
+        }
     }
 }
