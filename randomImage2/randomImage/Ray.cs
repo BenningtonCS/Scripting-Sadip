@@ -8,7 +8,7 @@ namespace randomImage
 {
     class Ray
     {
-        Vector origin, direction;
+       /* Vector origin, direction;
 
         public void findingPoint(Vector origin, Vector direction, double radius, Vector position) {
           
@@ -32,6 +32,6 @@ namespace randomImage
             else {
                 Console.WriteLine("Ray doesn't hit the sphere");
             }
-        }
+        }*/
     }
 }

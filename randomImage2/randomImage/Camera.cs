@@ -8,8 +8,8 @@ namespace randomImage
 {
     class Camera
     {
-        double height = 500;
-        double width = 500;
-        double pixelSize = 1;
+        public static double height = 400;
+        public static double width = 400;
+        public static double pixelSize = 1;
     }
 }

@@ -33,22 +33,22 @@ namespace randomImage
         }
 
         private void MakePic(SColor pixel) {
-            int width = 25;    
-            int height = 25;
-            Bitmap bmp = new Bitmap(height, width); // creating bitmap
+            //double width = 40;    
+            //double height = 40;
+            Bitmap bmp = new Bitmap((int)(Camera.height), (int) (Camera.width)); // creating bitmap
             Random randomNumber = new Random(); //to get random number for ARGB value
 
             
-            for (int j = 0; j <= height; j ++) {
-                for (int i = 0; i <= width; i++) {
+            for (double j =  1; j <= Camera.height; j ++) {
+                for (double i = 1; i <= Camera.width; i++) {
                     int r = pixel.GetRedColor(); // getting random number from 0 to 255 
                     int g = pixel.GetGreenColor();
                     int b = pixel.GetBlueColor();
                     int a = pixel.GetAlphaColor();
 
-                    
-                    if (Math.Pow(i, 2) + Math.Pow(j, 2) == Math.Pow(Sphere.radius, 2)) {
-                        bmp.SetPixel(i, j, Color.FromArgb(255, 255, 0, 0)); //coloring each pixel where x^2 + y^2 == r^2 works. But it colors pixel of only circumference.
+                    //bmp.SetPixel((int)(i), (int)(j), Color.FromArgb(255, 255, 0, 0));
+                    if (Math.Pow(i, 2) + Math.Pow(j, 2) <= Math.Pow(Sphere.radius, 2)) {
+                        bmp.SetPixel((int) (i * Camera.pixelSize), (int) (j * Camera.pixelSize), Color.FromArgb(255, 255, 0, 0)); //coloring each pixel where x^2 + y^2 == r^2 works. But it colors pixel of only circumference.
                     }
                 }
             }

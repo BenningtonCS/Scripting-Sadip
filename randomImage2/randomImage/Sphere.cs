@@ -9,8 +9,8 @@ namespace randomImage
     class Sphere
     {
         public static double radius = 10;
-        SColor newColor = new SColor(1,1,0,1);
-        Vector position = new Vector(0,0,0);
+        public static SColor newColor = new SColor(1,1,0,1);
+        public static Vector position = new Vector(0,0,0);
 
     }
 }
