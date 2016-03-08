@@ -33,26 +33,34 @@ namespace randomImage
         }
 
         private void MakePic(SColor pixel) {
-            int width = 1000;    
-            int height = 1000;
+            int width = 25;    
+            int height = 25;
             Bitmap bmp = new Bitmap(height, width); // creating bitmap
             Random randomNumber = new Random(); //to get random number for ARGB value
 
             
-            for (int j = 0; j < height; j ++) {
-                for (int i = 0; i < width; i++) {
+            for (int j = 0; j <= height; j ++) {
+                for (int i = 0; i <= width; i++) {
                     int r = pixel.GetRedColor(); // getting random number from 0 to 255 
                     int g = pixel.GetGreenColor();
                     int b = pixel.GetBlueColor();
                     int a = pixel.GetAlphaColor();
 
-                    bmp.SetPixel(i,j,Color.FromArgb(a,r,g,b)); //creation of each pixel and filling it with each random argba value
+                    
+                    if (Math.Pow(i, 2) + Math.Pow(j, 2) == Math.Pow(Sphere.radius, 2)) {
+                        bmp.SetPixel(i, j, Color.FromArgb(255, 255, 0, 0)); //coloring each pixel where x^2 + y^2 == r^2 works. But it colors pixel of only circumference.
+                    }
                 }
             }
 
             pictureBox1.Image = bmp; // setting the image into pictureBox1
 
             bmp.Save("myImage.jpeg"); // it saves the random image 
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
 
         }
     }
