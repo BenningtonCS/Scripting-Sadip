@@ -39,8 +39,8 @@ namespace randomImage
             Random randomNumber = new Random(); //to get random number for ARGB value
 
             
-            for (double j =  1; j <= Camera.height; j ++) {
-                for (double i = 1; i <= Camera.width; i++) {
+            for (double j =  20; j <= Camera.height; j ++) {
+                for (double i = 20; i <= Camera.width; i++) {
                     int r = pixel.GetRedColor(); // getting random number from 0 to 255 
                     int g = pixel.GetGreenColor();
                     int b = pixel.GetBlueColor();
