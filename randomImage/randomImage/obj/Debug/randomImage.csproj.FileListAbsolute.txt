@@ -10,3 +10,9 @@ C:\Users\Student\Desktop\Sadip\randomImage\randomImage\obj\Debug\randomImage.pdb
 C:\Users\Student\Documents\GitHub\Sadip\Scripting-Sadip\randomImage\randomImage\bin\Debug\randomImage.exe.config
 C:\Users\Student\Documents\GitHub\Sadip\Scripting-Sadip\randomImage\randomImage\obj\Debug\randomImage.exe
 C:\Users\Student\Documents\GitHub\Sadip\Scripting-Sadip\randomImage\randomImage\obj\Debug\randomImage.pdb
+C:\Users\Student\Documents\GitHub\Sadip\Scripting-Sadip\randomImage\randomImage\bin\Debug\randomImage.exe
+C:\Users\Student\Documents\GitHub\Sadip\Scripting-Sadip\randomImage\randomImage\bin\Debug\randomImage.pdb
+C:\Users\Student\Documents\GitHub\Sadip\Scripting-Sadip\randomImage\randomImage\obj\Debug\randomImage.csprojResolveAssemblyReference.cache
+C:\Users\Student\Documents\GitHub\Sadip\Scripting-Sadip\randomImage\randomImage\obj\Debug\randomImage.Form1.resources
+C:\Users\Student\Documents\GitHub\Sadip\Scripting-Sadip\randomImage\randomImage\obj\Debug\randomImage.Properties.Resources.resources
+C:\Users\Student\Documents\GitHub\Sadip\Scripting-Sadip\randomImage\randomImage\obj\Debug\randomImage.csproj.GenerateResource.Cache

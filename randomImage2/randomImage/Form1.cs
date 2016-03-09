@@ -39,16 +39,16 @@ namespace randomImage
             Random randomNumber = new Random(); //to get random number for ARGB value
 
 
-            for (double j =  20; j <= Camera.height; j ++) {
-                for (double i = 20; i <= Camera.width; i++) {
+            for (double j =  0; j <= Camera.height; j ++) {
+                for (double i = 0; i <= Camera.width; i++) {
                     int r = pixel.GetRedColor(); // getting random number from 0 to 255 
                     int g = pixel.GetGreenColor();
                     int b = pixel.GetBlueColor();
                     int a = pixel.GetAlphaColor();
 
                     //bmp.SetPixel((int)(i), (int)(j), Color.FromArgb(255, 255, 0, 0));
-                    if (Math.Pow(i , 2) + Math.Pow(j , 2) <= Math.Pow(Sphere.radius, 2)) {
-                        bmp.SetPixel((int) (i * Camera.pixelSize), (int) (j * Camera.pixelSize), Color.FromArgb(255, 255, 0, 0)); //coloring each pixel where x^2 + y^2 <= r^2 works. But it colors pixel of only circumference.
+                    if (Math.Pow((i - Sphere.position.x) , 2) + Math.Pow((j - Sphere.position.y) , 2) <= Math.Pow(Sphere.radius, 2)) {
+                        bmp.SetPixel((int) (i + Camera.pixelSize), (int) (j + Camera.pixelSize), Color.FromArgb(255, 255, 0, 0)); //coloring each pixel where x^2 + y^2 <= r^2 works. But it colors pixel of only circumference.
                     }
                 }
             }
