@@ -35,21 +35,24 @@ namespace randomImage
         private void MakePic(SColor pixel) {
             //double width = 40;    
             //double height = 40;
+            Vector point = Camera.position + Ray.direction * Ray.findingT();
             Bitmap bmp = new Bitmap((int)(Camera.height), (int) (Camera.width)); // creating bitmap
             Random randomNumber = new Random(); //to get random number for ARGB value
-
-
-            for (double j =  0; j <= Camera.height; j ++) {
-                for (double i = 0; i <= Camera.width; i++) {
+            double j = Camera.position.y + Camera.height / 2 - .5;
+            double i = Camera.position.x + Camera.width / 2  - .5;   
+            for (j =  0; j <= Camera.height; j ++) {
+                for (i = 0; i <= Camera.width; i++) {
                     int r = pixel.GetRedColor(); // getting random number from 0 to 255 
                     int g = pixel.GetGreenColor();
                     int b = pixel.GetBlueColor();
                     int a = pixel.GetAlphaColor();
 
-                    //bmp.SetPixel((int)(i), (int)(j), Color.FromArgb(255, 255, 0, 0));
-                    if (Math.Pow((i - Sphere.position.x) , 2) + Math.Pow((j - Sphere.position.y) , 2) <= Math.Pow(Sphere.radius, 2)) {
-                        bmp.SetPixel((int) (i + Camera.pixelSize), (int) (j + Camera.pixelSize), Color.FromArgb(255, 255, 0, 0)); //coloring each pixel where x^2 + y^2 <= r^2 works. But it colors pixel of only circumference.
+                    
+                    if (Math.Abs((point - Sphere.center) * (point - Sphere.center)) < Math.Pow(Sphere.radius, 2)) {
+                        bmp.SetPixel((int) i, (int) j, Color.FromArgb(r, g, b, a)); //coloring each pixel where x^2 + y^2 <= r^2 works. But it colors pixel of only circumference.
                     }
+                       
+                    
                 }
             }
 
@@ -58,6 +61,8 @@ namespace randomImage
             bmp.Save("myImage.jpeg"); // it saves the random image 
 
         }
+
+        
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
