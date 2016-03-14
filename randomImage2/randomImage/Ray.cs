@@ -8,9 +8,19 @@ namespace randomImage
 {
     class Ray
     {
-        public static Vector direction;
+        /*private Vector origin;
+        private Vector direction;
+        public Vector getOrigin()
+        {
+            return this.origin;
+        }
 
-        public static double findingT (){
+        public Vector getDirection()
+        {
+            return this.direction;
+        }
+        
+        public static double getT (){
 
 
             // to compute -d.(o - c) +- sqrt((d * (o - c))^2 - ((o - c)(o - c) - r^2)) which is equal to t
@@ -27,6 +37,6 @@ namespace randomImage
                 return Math.Min(t1, t2);
             }
             return 0;
-        }
+        }*/
     }
 }
