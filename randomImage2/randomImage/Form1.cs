@@ -21,9 +21,9 @@ namespace randomImage
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            SColor color = new SColor(0,0,1,1);
+            SColor color = new SColor(1,0,1,1);
             Vector center = new Vector(0,0,0);
-            Sphere sphere1 = new Sphere(30, color, center);
+            Sphere sphere1 = new Sphere(10, color, center);
             Camera camera = new Camera(new Vector(0, 0, 50), new Vector(0, 0, -1));
             Scene scene = new Scene(sphere1);
 
