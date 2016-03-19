@@ -17,6 +17,7 @@ namespace randomImage
             this.a = a;
         }
 
+        // giving each r, g, b and a gamma values 
         public int GetRedColor()
         {
             return (int)(Math.Pow(r, (1 / 2.2)) * 255);

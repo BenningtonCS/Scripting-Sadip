@@ -34,3 +34,12 @@ C:\Users\aksbh\Desktop\Scripting-Sadip\randomImage2\randomImage\obj\Debug\random
 C:\Users\aksbh\Desktop\Scripting-Sadip\randomImage2\randomImage\obj\Debug\randomImage.Form1.resources
 C:\Users\aksbh\Desktop\Scripting-Sadip\randomImage2\randomImage\obj\Debug\randomImage.Properties.Resources.resources
 C:\Users\aksbh\Desktop\Scripting-Sadip\randomImage2\randomImage\obj\Debug\randomImage.csproj.GenerateResource.Cache
+F:\Scripting-Sadip\randomImage2\randomImage\bin\Debug\randomImage.exe.config
+F:\Scripting-Sadip\randomImage2\randomImage\obj\Debug\randomImage.exe
+F:\Scripting-Sadip\randomImage2\randomImage\obj\Debug\randomImage.pdb
+F:\Scripting-Sadip\randomImage2\randomImage\bin\Debug\randomImage.exe
+F:\Scripting-Sadip\randomImage2\randomImage\bin\Debug\randomImage.pdb
+F:\Scripting-Sadip\randomImage2\randomImage\obj\Debug\randomImage.csprojResolveAssemblyReference.cache
+F:\Scripting-Sadip\randomImage2\randomImage\obj\Debug\randomImage.Form1.resources
+F:\Scripting-Sadip\randomImage2\randomImage\obj\Debug\randomImage.Properties.Resources.resources
+F:\Scripting-Sadip\randomImage2\randomImage\obj\Debug\randomImage.csproj.GenerateResource.Cache
