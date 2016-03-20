@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Disk.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -10,6 +10,7 @@ namespace randomImage
     {
         public Sphere sphere;
         public Plane plane;
+        public Disk disk;
 
 
         public Scene(Sphere sphere) {
@@ -18,6 +19,10 @@ namespace randomImage
 
         public Scene(Plane plane) {
             this.plane = plane;
+        }
+
+        public Scene(Disk disk) {
+            this.disk = disk;
         }
     }
 }

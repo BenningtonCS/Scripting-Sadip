@@ -22,15 +22,24 @@ namespace randomImage
         private void Form1_Load(object sender, EventArgs e)
         {
             // making a sphere by assigning it it's parameters
+            /* SColor color = new SColor(1,0,1,1);
+             Vector center = new Vector(0,0,0);
+             Sphere sphere1 = new Sphere(40, color, center);*/
+
+            // making a plane by assigning it it's parameters
             SColor color = new SColor(1,0,1,1);
-            Vector center = new Vector(0,0,0);
-            Sphere sphere1 = new Sphere(40, color, center);
+            Vector normal = new Vector(0,0,1); // this will give a plane which is perpendicular to camera.
+            Vector point = new Vector(0,0,0);
+            Plane plane1 = new Plane(normal, point, color);
             
             // setting our camera position and direction of the camera
             Camera camera = new Camera(new Vector(0, 0, 50), new Vector(0, 0, -1));
 
             // calling scene class for creating a sphere1
-            Scene scene = new Scene(sphere1);
+            // Scene scene = new Scene(sphere1);
+
+            // calling scene class for creating a plane1
+            Scene scene = new Scene(plane1);
 
             Bitmap bmp = new Bitmap(camera.width, camera.height);
             camera.Render(scene, bmp);

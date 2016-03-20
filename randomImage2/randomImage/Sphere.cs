@@ -41,7 +41,7 @@ namespace randomImage
                 return false;
             }
             if ((t1 > 0) | (t2 > 0)) {
-                if (t2 > t1) { // need to take the nearest point that small t value greater than zero
+                if (t2 > t1) { // need to take the nearest point i.e. small t value greater than zero
                     t1 = t2;
                 }
             }
