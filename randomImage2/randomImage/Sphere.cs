@@ -6,23 +6,19 @@ using System.Threading.Tasks;
 
 namespace randomImage
 {
-    class Sphere
+    class Sphere : Shape // inheritating shape class where center of the sphere is related to position of shape
     {
         public double radius;
-        public SColor color;
-        public Vector center;
 
         // defining a sphere with it's parameters
-        public Sphere(double radius, SColor color, Vector center) {
+        public Sphere(double radius, SColor color, Vector position) : base(position, color){
             this.radius = radius;
-            this.color = color;
-            this.center = center; 
         }
 
         // knowing whether the ray intersect the sphere or not
         // strictly using geometric approach for efficient ray tracing 
         public bool DoesIntersect(Vector origin, Vector direction) {
-            Vector p = center - origin; // position vector from center of the sphere to origin of the ray
+            Vector p = position - origin; // position vector from center of the sphere to origin of the ray
             double d = direction * p; // projection onto the ray
             double q = (p * p) - (d * d); // distance from the center to the ray hitting the sphere
             // finding 'x' distance inside the sphere
