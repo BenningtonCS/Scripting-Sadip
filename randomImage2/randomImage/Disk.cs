@@ -21,7 +21,7 @@ namespace randomImage
         }
 
         // creating a function to check whether the ray intersect the plane or not containing disk on it
-        public bool IntersectPlane(Vector origin, Vector direction) {
+            bool DoesIntersectDiskPlane(Vector origin, Vector direction) {
             double t = 0;
             double denominator = normal * direction; // from the formula t = ((point - Origin)*normal)/(direction * normal)
             if (denominator > 0)
@@ -36,7 +36,7 @@ namespace randomImage
         // knowing whether the ray intersect the disk or not 
         public bool DoesIntersect(Vector origin, Vector direction) { 
             double t = 0;
-            if (IntersectPlane()) // at first let's find whether the ray intersect the plane or not 
+            if (DoesIntersectDiskPlane(origin, direction)) // at first let's find whether the ray intersect the plane or not 
             {                                           // if so then 
                 Vector p = origin + direction * t;      // point of intersection in the plane
                 Vector q = p - center;                  // position vector from point to center of the disk
@@ -47,9 +47,5 @@ namespace randomImage
             return false;
         }
 
-        private bool IntersectPlane()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
