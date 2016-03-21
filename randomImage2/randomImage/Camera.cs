@@ -49,8 +49,8 @@ namespace randomImage
 
                     if (scene.disk.DoesIntersect(coordinate, direction)) // checking whether the ray hits the sphere or not
                     {
-                
-                        bmp.SetPixel(i, j, Color.FromArgb(a, r, g, b));
+                        bmp.SetPixel(i, j, Color.FromArgb(a,r,g,b));
+                        //bmp.SetPixel(i, j, Color.FromArgb((int)(a*0.5), (int)(r*0.5), (int)(g*0.5), (int)(b*0.5))); // checking by having 0.5 as the ambient of the shape
                         //Debug.WriteLine(i.ToString() + ", " + j.ToString());
                     }
                     else {

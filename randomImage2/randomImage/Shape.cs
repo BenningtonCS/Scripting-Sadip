@@ -13,7 +13,11 @@ namespace randomImage
 
         public Shape(Vector position, SColor color) {
             this.position = position;
-            this.color = color;   
-        } 
+            this.color = color;  
+        }
+
+        public bool DoesIntersect() {
+            return false;
+        }
     }
 }
