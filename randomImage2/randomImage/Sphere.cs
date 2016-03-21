@@ -17,7 +17,7 @@ namespace randomImage
 
         // knowing whether the ray intersect the sphere or not
         // strictly using geometric approach for efficient ray tracing 
-        public bool DoesIntersect(Vector origin, Vector direction) {
+        public override bool DoesIntersect(Vector origin, Vector direction) {
             Vector p = position - origin; // position vector from center of the sphere to origin of the ray
             double d = direction * p; // projection onto the ray
             double q = (p * p) - (d * d); // distance from the center to the ray hitting the sphere

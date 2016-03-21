@@ -6,16 +6,24 @@ using System.Threading.Tasks;
 
 namespace randomImage
 {
-    class Ambient
+    class Material
     {
         public double ambient;
+        public SColor color;
+
+        public Material(SColor color)
+        {
+            this.color = color;
+        }
 
         // setting default ambient value
-        public Ambient() {
+        public Material()
+        {
             ambient = 1;
         }
 
-        public Ambient(double ambient) {
+        public Material(double ambient)
+        {
             this.ambient = ambient;
         }
     }

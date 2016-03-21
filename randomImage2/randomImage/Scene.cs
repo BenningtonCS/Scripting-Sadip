@@ -8,21 +8,13 @@ namespace randomImage
 {
     class Scene
     {
-        public Sphere sphere;
-        public Plane plane;
-        public Disk disk;
+        public Shape shape;
 
 
-        public Scene(Sphere sphere) {
-            this.sphere = sphere;
+        public Scene(Shape shape) {
+            this.shape = shape;
         }
 
-        public Scene(Plane plane) {
-            this.plane = plane;
-        }
-
-        public Scene(Disk disk) {
-            this.disk = disk;
-        }
+//        public void addShape(Shape )
     }
 }

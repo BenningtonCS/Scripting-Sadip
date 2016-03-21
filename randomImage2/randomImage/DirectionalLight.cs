@@ -12,7 +12,7 @@ namespace randomImage
 
         public double i(Vector direction){
            
-
+            
             return 1;
         } 
 

@@ -23,23 +23,11 @@ namespace randomImage
 
         public void Render(Scene scene, Bitmap bmp) {
 
-            // getting the color of the sphere
-            /*int a = scene.sphere.color.GetAlphaColor(); 
-            int r = scene.sphere.color.GetRedColor();
-            int g = scene.sphere.color.GetGreenColor();
-            int b = scene.sphere.color.GetBlueColor();*/
-
-            // getting the color of the plane
-            /*int a = scene.plane.color.GetAlphaColor();
-            int r = scene.plane.color.GetRedColor();
-            int g = scene.plane.color.GetGreenColor();
-            int b = scene.plane.color.GetBlueColor();*/
-
-            // getting the color of the disk
-            int a = scene.disk.color.GetAlphaColor();
-            int r = scene.disk.color.GetRedColor();
-            int g = scene.disk.color.GetGreenColor();
-            int b = scene.disk.color.GetBlueColor();
+            // getting the color of the shape
+            int a = scene.shape.material.color.GetAlphaColor();
+            int r = scene.shape.material.color.GetRedColor();
+            int g = scene.shape.material.color.GetGreenColor();
+            int b = scene.shape.material.color.GetBlueColor();
 
             for (int i = 0; i < height; i++)
             {
@@ -47,7 +35,7 @@ namespace randomImage
                 {
                     Vector coordinate = new Vector((-width/2), (height/2), 0) + new Vector(0.5, -0.5, 0) + new Vector(i, -j, position.z); // changing the basis i.e. in terms of i and j of the image
 
-                    if (scene.disk.DoesIntersect(coordinate, direction)) // checking whether the ray hits the sphere or not
+                    if (scene.shape.DoesIntersect(coordinate, direction)) // checking whether the ray hits the sphere or not
                     {
                         bmp.SetPixel(i, j, Color.FromArgb(a,r,g,b));
                         //bmp.SetPixel(i, j, Color.FromArgb((int)(a*0.5), (int)(r*0.5), (int)(g*0.5), (int)(b*0.5))); // checking by having 0.5 as the ambient of the shape

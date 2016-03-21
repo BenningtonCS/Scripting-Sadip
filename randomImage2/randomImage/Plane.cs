@@ -17,7 +17,7 @@ namespace randomImage
         }
 
         // does the ray intersect the plane?
-        public bool DoesIntersect(Vector origin, Vector direction) {
+        public override bool DoesIntersect(Vector origin, Vector direction) {
             double t = 0; // setting the value of t as zero first
             double denominator = normal * direction; // from the formula t = ((point - Origin)*normal)/(direction * normal)
             if (denominator > 0) {

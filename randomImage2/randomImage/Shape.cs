@@ -9,14 +9,15 @@ namespace randomImage
     class Shape
     {
         public Vector position;
-        public SColor color;
+        public Material material;
 
         public Shape(Vector position, SColor color) {
             this.position = position;
-            this.color = color;  
+            this.material = new Material(color);
+           //this.color = color;  
         }
 
-        public bool DoesIntersect() {
+        public virtual bool DoesIntersect(Vector origin, Vector direction) {
             return false;
         }
     }
