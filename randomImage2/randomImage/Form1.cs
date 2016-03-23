@@ -22,9 +22,9 @@ namespace randomImage
         private void Form1_Load(object sender, EventArgs e)
         {
             // making a sphere by assigning it it's parameters
-             SColor color = new SColor(1,0,1,1);
-             Vector center = new Vector(0,0,0);
-             Sphere sphere1 = new Sphere(40, color, center);
+            /* SColor color = new SColor(0.2,0,.5,1);
+             Vector center = new Vector(0,20,0);
+             Sphere sphere1 = new Sphere(60, color, center);*/
 
             // making a plane by assigning it it's parameters
             /*SColor color = new SColor(1,0,1,1);
@@ -33,17 +33,17 @@ namespace randomImage
             Plane plane1 = new Plane(normal, point, color);*/
 
             // making a disk by assigning it it's parameters
-            /*SColor color = new SColor(1,1,0,1);
+            SColor color = new SColor(1,1,0,1);
             Vector normal = new Vector(0,0,1); // plane will be vertical  
             Vector center = new Vector(100,0,0);
             double radius = 30;
-            Disk disk1 = new Disk(normal, center, radius, color);*/
+            Disk disk1 = new Disk(normal, center, radius, color);
             
             // setting our camera position and direction of the camera
             Camera camera = new Camera(new Vector(0, 0, 50), new Vector(0, 0, -1));
 
             // calling scene class for creating a sphere1
-            Scene scene = new Scene(sphere1);
+            Scene scene = new Scene(disk1);
 
             // calling scene class for creating a plane1
             //Scene scene = new Scene(plane1);

@@ -8,13 +8,12 @@ namespace randomImage
 {
     class DirectionalLight
     {
-        public Vector direction;
+       /* public Vector direction;
 
-        public double i(Vector direction){
-           
+        public double LightIntensity(Vector direction){
             
-            return 1;
-        } 
+            
+        }*/
 
     }
 }

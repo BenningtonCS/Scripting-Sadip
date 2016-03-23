@@ -24,7 +24,7 @@ namespace randomImage
 
         // knowing whether the ray intersect the disk or not 
         public override bool DoesIntersect(Vector origin, Vector direction) { 
-            double t = 0;
+            double t = 1e-15;
             if (DoesIntersectDiskPlane(origin, direction)) // at first let's find whether the ray intersect the plane or not 
             {                                           // if so then 
                 Vector p = origin + direction * t;      // point of intersection in the plane
