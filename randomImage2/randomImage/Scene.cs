@@ -15,6 +15,5 @@ namespace randomImage
             this.shape = shape;
         }
 
-//        public void addShape(Shape )
     }
 }

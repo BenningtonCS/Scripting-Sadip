@@ -14,9 +14,9 @@ namespace randomImage
             this.maxPosition = maxPosition;
         }
 
-        public override bool DoesIntersect(Vector origin, Vector direction) {
+        public override double DoesIntersect(Vector origin, Vector direction) {
             
-            return true;
+            return 0;
         }
 
     }

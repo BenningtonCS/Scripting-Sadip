@@ -17,8 +17,11 @@ namespace randomImage
            //this.color = color;  
         }
 
-        public virtual bool DoesIntersect(Vector origin, Vector direction) {
-            return false;
+        public virtual double DoesIntersect(Vector origin, Vector direction) {
+            return -1;
         }
+
+        
+
     }
 }

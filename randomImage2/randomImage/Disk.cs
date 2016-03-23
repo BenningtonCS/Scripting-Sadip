@@ -17,23 +17,26 @@ namespace randomImage
         }
 
         // creating a function to check whether the ray intersect the plane or not containing disk on it
-        bool DoesIntersectDiskPlane(Vector origin, Vector direction) {
+        double DoesIntersectDiskPlane(Vector origin, Vector direction) {
             Plane diskPlane = new Plane(normal, position, material.color); // checking whether the ray intersect the plane containing the disk
             return diskPlane.DoesIntersect(origin, direction);
         }
 
         // knowing whether the ray intersect the disk or not 
-        public override bool DoesIntersect(Vector origin, Vector direction) { 
-            double t = 1e-15;
-            if (DoesIntersectDiskPlane(origin, direction)) // at first let's find whether the ray intersect the plane or not 
+        public override double DoesIntersect(Vector origin, Vector direction) { 
+            double t = DoesIntersectDiskPlane(origin, direction);
+            if (t > 0) // at first let's find whether the ray intersect the plane or not 
             {                                           // if so then 
                 Vector p = origin + direction * t;      // point of intersection in the plane
                 Vector q = p - position;                // position vector from point to center of the disk
                 double d = Vector.magnitude(q);         // magnitude of the vector which gives the distance inside the disk
-                return (d <= radius);                   // then that distance should be smaller than that of radius of the disk according to geometric approach.
+                //return (d <= radius);                 // then that distance should be smaller than that of radius of the disk according to geometric approach.
+                if (d > radius) {
+                    t = -1;
+                }
             }
 
-            return false;
+            return t;
         }
 
     }

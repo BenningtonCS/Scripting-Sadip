@@ -15,11 +15,15 @@ namespace randomImage
         public int width = 500;
         public double pixelSize = 1;
         public Vector direction;
+        public Shape closestShape;
+        double closetT = 10000000;
+
    
         public Camera(Vector position, Vector direction) {
             this.position = position;
             this.direction = direction;
         }
+
 
         public void Render(Scene scene, Bitmap bmp) {
 
@@ -34,16 +38,16 @@ namespace randomImage
                 for (int j = 0; j < width; j++)
                 {
                     Vector coordinate = new Vector((-width/2), (height/2), 0) + new Vector(0.5, -0.5, 0) + new Vector(i, -j, position.z); // changing the basis i.e. in terms of i and j of the image
-
-                    if (scene.shape.DoesIntersect(coordinate, direction)) // checking whether the ray hits the sphere or not
-                    {
-                        bmp.SetPixel(i, j, Color.FromArgb(a,r,g,b));
-                        //bmp.SetPixel(i, j, Color.FromArgb((int)(a*0.5), (int)(r*0.5), (int)(g*0.5), (int)(b*0.5))); // checking by having 0.5 as the ambient of the shape
-                        //Debug.WriteLine(i.ToString() + ", " + j.ToString());
-                    }
-                    else {
-                        // it should return black as a default background color
-                        bmp.SetPixel(i, j, Color.FromArgb(255, 0, 0, 0));
+                        if (scene.shape.DoesIntersect(coordinate, direction)) // checking whether the ray hits the sphere or not
+                        {
+                            bmp.SetPixel(i, j, Color.FromArgb(a, r, g, b));
+                            //bmp.SetPixel(i, j, Color.FromArgb((int)(a*0.5), (int)(r*0.5), (int)(g*0.5), (int)(b*0.5))); // checking by having 0.5 as the ambient of the shape
+                            //Debug.WriteLine(i.ToString() + ", " + j.ToString());
+                        }
+                        else {
+                            // it should return black as a default background color
+                            bmp.SetPixel(i, j, Color.FromArgb(255, 0, 0, 0));
+                        }
                     }
                 }
             }
