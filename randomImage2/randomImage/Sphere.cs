@@ -20,17 +20,22 @@ namespace randomImage
         public override double DoesIntersect(Vector origin, Vector direction) {
             Vector p = position - origin; // position vector from center of the sphere to origin of the ray
             double d = direction * p; // projection onto the ray
-            if (d < 0) {
+            /*if (d < -radius) {
                 return -1;
-            }
+            }*/
             double q = (p * p) - (d * d); // distance from the center to the ray hitting the sphere
             // finding 'x' distance inside the sphere
+            if (q < 0)
+            {
+                return -1;
+            }
+
             double x = (radius * radius) - q; // here q is a squared term itself
             double t1 = 0;
             double t2 = 0;
 
             if (x < 0) {
-                return -1;
+                return x;
             } else if (x > 0) {
                 t1 = d - Math.Sqrt(x); // x is a squared term so need to find its square root
                 t2 = d + Math.Sqrt(x); 

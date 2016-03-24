@@ -16,7 +16,8 @@ namespace randomImage
 
         public override double DoesIntersect(Vector origin, Vector direction) {
             
-            return 0;
+
+            return -1;
         }
 
     }

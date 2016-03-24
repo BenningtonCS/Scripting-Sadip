@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace randomImage
 {
-    class Material
+    public class Material
     {
         public double ambient;
         public SColor color;

@@ -6,13 +6,19 @@ using System.Threading.Tasks;
 
 namespace randomImage
 {
-    class Scene
+    public class Scene
     {
         public Shape shape;
 
+        public Shape[] shapes;
 
         public Scene(Shape shape) {
             this.shape = shape;
+        }
+
+        public Scene(Shape[] shapes)
+        {
+            this.shapes = shapes;
         }
 
     }

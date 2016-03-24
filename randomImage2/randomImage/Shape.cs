@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace randomImage
 {
-    class Shape
+    public class Shape
     {
         public Vector position;
         public Material material;
