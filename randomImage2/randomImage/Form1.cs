@@ -23,6 +23,7 @@ namespace randomImage
         {
             // making a sphere by assigning it it's parameters
              SColor sphereColor = new SColor(1,1,0,1);
+             Vector sphereCenter = new Vector(-100,0,-90);
              Sphere sphere1 = new Sphere(100, sphereColor, sphereCenter);
 
             SColor sphereColor1 = new SColor(1, 1, 1, 1);
@@ -43,10 +44,12 @@ namespace randomImage
             Disk disk1 = new Disk(diskNormal, diskCenter, diskRadius, diskColor);
 
             // making a box by assigning it it's parameters
+            Box box1 = new Box(new Vector(-100,200,0), new Vector(200,200,-200), new SColor(1,0,0,1));
             
             // setting our camera position and direction of the camera
             Camera camera = new Camera(new Vector(0, 0, 500), new Vector(0, 0, -1));
 
+            Shape[] shapes = {sphere1, box1};
 
             Scene scene = new Scene(shapes);
 
