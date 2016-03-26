@@ -20,9 +20,6 @@ namespace randomImage
         public override double DoesIntersect(Vector origin, Vector direction) {
             Vector p = position - origin; // position vector from center of the sphere to origin of the ray
             double d = direction * p; // projection onto the ray
-            /*if (d < -radius) {
-                return -1;
-            }*/
             double q = (p * p) - (d * d); // distance from the center to the ray hitting the sphere
             // finding 'x' distance inside the sphere
             if (q < 0)

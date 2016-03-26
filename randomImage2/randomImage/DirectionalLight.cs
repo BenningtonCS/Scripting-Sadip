@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace randomImage
 {
-    class DirectionalLight
+    class DirectionalLight : Light
     {
-       public Vector direction;
-
-       public double LightIntensity(Vector direction){
-            double i = 0;
-
-            return i;   
+        public DirectionalLight(Vector direction) : base(direction){
         }
+
+        /*public double LightIntensity(Vector origin, Vector direction, double t, Vector position) {
+            double i = 0;
+            Vector p = origin + direction * t;
+            Vector positionToPoint = p - position;
+            Vector normal = unitVector(positionToPoint);
+            i = -(Light.direction * normal);
+            if () { };
+            return i;
+        }*/
 
     }
 }
