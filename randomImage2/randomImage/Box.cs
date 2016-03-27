@@ -24,6 +24,7 @@ namespace randomImage
 
         // making does intersect method which returns t values
         public override double DoesIntersect(Vector origin, Vector direction) {
+
             double txmin = (position.x - origin.x) / direction.x; // this is minimum x value of t
             double txmax = (maxPosition.x - origin.x) / direction.x; // this is maximum x value of t
 

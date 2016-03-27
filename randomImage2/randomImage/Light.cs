@@ -9,9 +9,11 @@ namespace randomImage
     class Light
     {
         public Vector direction;
+        public SColor lightColor;
 
-        public Light(Vector direction) {
+        public Light(Vector direction, SColor lightColor) {
             this.direction = direction;
+            this.lightColor = lightColor;
         } 
 
     }

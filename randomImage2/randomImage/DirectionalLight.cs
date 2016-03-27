@@ -8,7 +8,8 @@ namespace randomImage
 {
     class DirectionalLight : Light
     {
-        public DirectionalLight(Vector direction) : base(direction){
+        public DirectionalLight(Vector direction, SColor color) : base(direction, color){
+            this.direction = direction;
         }
 
         /*public double LightIntensity(Vector origin, Vector direction, double t, Vector position) {

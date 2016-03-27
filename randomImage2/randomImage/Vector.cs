@@ -70,6 +70,14 @@ namespace randomImage
             return new Vector(a.x * (1/magnitude(a)), a.y * (1/magnitude(a)), a.z * (1/magnitude(a)));
         }
 
+        public Vector Normalize(double d)
+        {
+            x /= d;
+            y /= d;
+            z /= d;
+            return new Vector(x, y, z);
+        }
+
 
     }
 }

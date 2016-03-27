@@ -22,9 +22,10 @@ namespace randomImage
         private void Form1_Load(object sender, EventArgs e)
         {
             // making a sphere by assigning it it's parameters
-             SColor sphereColor = new SColor(1,1,0,1);
-             Vector sphereCenter = new Vector(-100,0,-90);
-             Sphere sphere1 = new Sphere(100, sphereColor, sphereCenter);
+            SColor sphereColor = new SColor(1,1,0,1);
+            Vector sphereCenter = new Vector(0,0,-110);
+            Sphere sphere1 = new Sphere(100, sphereColor, sphereCenter);
+            Material Material1 = new Material(0.1);
 
             SColor sphereColor1 = new SColor(1, 1, 1, 1);
             Vector sphereCenter1 = new Vector(0, 0, 0);
@@ -43,18 +44,21 @@ namespace randomImage
             double diskRadius = 100;
             Disk disk1 = new Disk(diskNormal, diskCenter, diskRadius, diskColor);
 
+            // making a light
+            Light light = new Light(new Vector(0,0,100) , new SColor(1,1,0,1));
+
             // making a box by assigning it it's parameters
-            Box box1 = new Box(new Vector(-100,200,0), new Vector(200,200,-200), new SColor(1,0,0,1));
+            Box box1 = new Box(new Vector(-100,200,100), new Vector(100,400,-100), new SColor(1,0,1,1));
             
             // setting our camera position and direction of the camera
-            Camera camera = new Camera(new Vector(0, 0, 500), new Vector(0, 0, -1));
+            Camera camera = new Camera(new Vector(10, 10, 500), new Vector(0, 0, -1));
 
-            Shape[] shapes = {sphere1, box1};
+            Shape[] shapes = {box1};
 
             Scene scene = new Scene(shapes);
 
             Bitmap bmp = new Bitmap(camera.width, camera.height);
-            camera.Render(scene, bmp);
+            camera.Render(scene, bmp, light);
             pictureBox1.Image = bmp;
             bmp.Save("image.jpeg");
         }
