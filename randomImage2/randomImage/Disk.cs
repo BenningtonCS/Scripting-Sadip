@@ -11,7 +11,7 @@ namespace randomImage
         public Vector normal; // this is the normal of the plane containing the disk
         public double radius; // radius of the disk
 
-        public Disk(Vector normal, Vector position, double radius, SColor color) : base(position, color){
+        public Disk(Vector normal, Vector position, double radius, Material material, SColor color) : base(position, color){
             this.normal = normal;
             this.radius = radius;
         }

@@ -8,11 +8,14 @@ namespace randomImage
 {
     class Light
     {
-        public Vector direction;
+        public Vector location;
         public SColor lightColor;
+        public double Intensity;
 
-        public Light(Vector direction, SColor lightColor) {
-            this.direction = direction;
+
+        public Light(Vector location, double Intensity, SColor lightColor) {
+            this.location = location;
+            this.Intensity = Intensity;
             this.lightColor = lightColor;
         } 
 
