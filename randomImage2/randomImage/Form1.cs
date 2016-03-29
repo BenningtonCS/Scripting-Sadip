@@ -33,28 +33,28 @@ namespace randomImage
 
             // making a plane by assigning it it's parameters
             SColor planeColor = new SColor(.5,1,.5,1);
-            Vector planeNormal = new Vector(0,1,1); // this will give a plane which direction is towards the direction of camera.
+            Vector planeNormal = new Vector(0,1,.5); // this will give a plane which direction is towards the direction of camera.
             Vector planePoint = new Vector(-100,0,-100);
             Plane  plane1 = new Plane(planeNormal, planePoint, planeColor);
 
             // making a disk by assigning it it's parameters
             SColor diskColor = new SColor(.5,0.5,0.5,0.5);
             Vector diskNormal = new Vector(0,1,0.5); // plane will be vertical  
-            Vector diskCenter = new Vector(90,0,0);
+            Vector diskCenter = new Vector(100,0,0);
             double diskRadius = 100;
             Material material = new Material(0.5);
-            Disk disk1 = new Disk(diskNormal, diskCenter, diskRadius, material,diskColor);
+            Disk disk1 = new Disk(diskNormal, diskCenter, diskRadius, diskColor);
 
             // making a light i.e. a point light
-            Light light = new Light(new Vector(-200,100,-50) , .5, new SColor(1,1,0,1));
+            Light light = new Light(new Vector(-30,50,100) , .75, new SColor(1,1,1,1));
 
             // making a box by assigning it it's parameters
-            Box box1 = new Box(new Vector(-100,200,100), new Vector(100,400,-100), new SColor(1,0,1,1));
+            Box box1 = new Box(new Vector(-200,200,100), new Vector(100,400,-100), new SColor(1,0,1,1));
             
             // setting our camera position and direction of the camera
             Camera camera = new Camera(new Vector(10, 10, 500), new Vector(0, 0, -1));
 
-            Shape[] shapes = {sphere1, sphere2, disk1, plane1};
+            Shape[] shapes = {sphere1, disk1};
 
             Scene scene = new Scene(shapes);
 
