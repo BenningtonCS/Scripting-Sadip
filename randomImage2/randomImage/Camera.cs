@@ -36,9 +36,9 @@ namespace randomImage
             {
                 for (int j = 0; j < width; j++)
                 {
-                    Vector coordinate = new Vector((-width / 2), (height / 2), 0) + new Vector(0.5, -0.5, 0) + new Vector(i, -j, position.z); // changing the basis i.e. in terms of i and j of the image
+                    Vector coordinate = new Vector((-width / 2), (height / 2), 0) + new Vector(0.5, -0.5, 0) + new Vector(j, -i, position.z); // changing the basis i.e. in terms of i and j of the image
 
-                    bmp.SetPixel(i, j, Color.FromArgb(255, 0, 0, 0));
+                    bmp.SetPixel(j, i, Color.FromArgb(255, 0, 0, 0));
 
                     Shape closestShape = scene.shapes[0]; // rendering multiple objects so searching for the closest shape to render
 
@@ -47,7 +47,7 @@ namespace randomImage
                     foreach (Shape shape in scene.shapes)
                     {
                         double t = shape.DoesIntersect(coordinate, direction);
-                        if (t < closestT && t >= 0)
+                        if ((t < closestT) && (t >= 0))
                         {
                             closestT = t;
                             closestShape = shape;
@@ -55,35 +55,43 @@ namespace randomImage
                     }
                     if (closestShape.DoesIntersect(coordinate, direction) >= 0) // checking whether the ray hits the sphere or not
                     {
-                        // for ligting 
-                        Vector point = position + direction * closestT; // point of intersection 
-                        Vector positionToPoint = point - closestShape.position;
+                        // for ligting
+                        Vector point = position + (direction * closestT); // point of intersection 
+                        Vector normal = closestShape.NormalAtPoint(point);
 
-                        // checking whether my unit vector works or not
-                        Vector normal = Vector.unitVector(positionToPoint);
-      
-                        //double d = Math.Sqrt(Math.Pow(positionToPoint.x, 2) + Math.Pow(positionToPoint.y, 2) + Math.Pow(positionToPoint.z, 2));
-                        //Vector normal = positionToPoint.Normalize(d); // normalizing position to point vector
-                        Vector lightPositionToPoint = light.location - point;
+                        Vector lightPositionToPoint = point - light.location;
 
-                        Vector lightUnitVector = Vector.unitVector(lightPositionToPoint);
+                        Vector lightUnitVector = lightPositionToPoint.Normalize(); //normalizing another vector
 
-                        //double e = Math.Sqrt(Math.Pow(lightPositionToPoint.x, 2) + Math.Pow(lightPositionToPoint.y, 2) + Math.Pow(lightPositionToPoint.z, 2));
-                        //Vector lightUnitVector = lightPositionToPoint.Normalize(e);
-                        double n = -(lightUnitVector * normal); // finding the scalar value which gives the light intensity
-                        double ambient = closestShape.material.ambient;
+    
+                        double cosineAngle = -(lightUnitVector * normal); // finding the scalar value which gives the light intensity
+                        //double ambient = closestShape.material.ambient;
+                        //double ambient = 0.5;
+                        //double ambient = closestShape.material.ambient;
+                        
 
-                        // if n will be greater than 0 then only lighting
-                        if (n >= 0) { 
-                        double r = closestShape.material.color.r * n * light.Intensity * light.lightColor.r;
-                        double g = closestShape.material.color.g * n * light.Intensity * light.lightColor.g;
-                        double b = closestShape.material.color.b * n * light.Intensity * light.lightColor.b;
-                        double a = closestShape.material.color.a;
+                        // diffuse reflectance
+                        double diffuseReflectance = 1 - closestShape.material.ambient;
 
-                        SColor newColor = new SColor(r, g, b, a);
-                        bmp.SetPixel(i, j, Color.FromArgb(newColor.GetAlphaColor(), newColor.GetRedColor(), newColor.GetGreenColor(), newColor.GetBlueColor()));
+                        // if cosineAngle will be greater than 0 then only lighting
+                        if (cosineAngle >= 0)
+                        {
+                            //creating new color factor variable
+                            //double colorFactor = (diffuseReflectance * light.Intensity * cosineAngle) * light.lightColor;
+
+                            /*double r = closestShape.material.color.r * colorFactor * ambient;
+                            double g = closestShape.material.color.g * colorFactor * ambient;
+                            double b = closestShape.material.color.b * colorFactor * ambient;
+                            double a = closestShape.material.color.a;*/
+
+                            SColor newColor = (closestShape.material.color/*light.lightColor*/ * light.Intensity * cosineAngle) * diffuseReflectance + (closestShape.material.color * closestShape.material.ambient);
+                            bmp.SetPixel(j, i, Color.FromArgb(newColor.GetAlphaColor(), newColor.GetRedColor(), newColor.GetGreenColor(), newColor.GetBlueColor()));
+                        }  else
+                        {
+                            SColor newColor = closestShape.material.color * closestShape.material.ambient;
+                            bmp.SetPixel(j, i, Color.FromArgb(newColor.GetAlphaColor(), newColor.GetRedColor(), newColor.GetGreenColor(), newColor.GetBlueColor()));
                         }
-                  
+                  }
                     }
                 }
             }
@@ -93,6 +101,5 @@ namespace randomImage
 
     }    
 
-    }
 
 

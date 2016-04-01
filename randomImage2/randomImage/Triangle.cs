@@ -10,7 +10,7 @@ namespace randomImage
     {
         public Vector secondPoint, thirdPoint;
 
-        public Triangle(Vector position, Vector secondPoint, Vector thirdPoint, SColor color) : base(position, color){
+        public Triangle(Vector position, Vector secondPoint, Vector thirdPoint, Material material) : base(position, material){
             this.secondPoint = secondPoint;
             this.thirdPoint = thirdPoint;
         }

@@ -11,21 +11,29 @@ namespace randomImage
         public double radius;
 
         // defining a sphere with it's parameters
-        public Sphere(double radius, SColor color, Vector position) : base(position, color){
+        public Sphere(double radius, Material material, Vector position) : base(position, material){
             this.radius = radius;
         }
 
+        public override Vector NormalAtPoint(Vector point) {
+            Vector positionToPoint = point - position;
+            // normalizing position to point vector
+            return positionToPoint.Normalize();
+
+        }
         // knowing whether the ray intersect the sphere or not
         // strictly using geometric approach for efficient ray tracing 
         public override double DoesIntersect(Vector origin, Vector direction) {
             Vector p = position - origin; // position vector from center of the sphere to origin of the ray
             double d = direction * p; // projection onto the ray
-            double q = (p * p) - (d * d); // distance from the center to the ray hitting the sphere
-            // finding 'x' distance inside the sphere
-            if (q < 0)
+
+            if (d < 0)
             {
                 return -1;
             }
+
+            double q = (p * p) - (d * d); // distance from the center to the ray hitting the sphere
+            // finding 'x' distance inside the sphere
 
             double x = (radius * radius) - q; // here q is a squared term itself
             double t1 = 0;
@@ -38,14 +46,16 @@ namespace randomImage
                 t2 = d + Math.Sqrt(x); 
             }
 
+            if ((t1 < 0) && (t2 < 0))
+            {
+                return -1;
+            }
+
             if (t1 < 0)
             {
-                return t2;
+                t1 = t2;
             }
-            else
-            {
-                return t1;
-            }
+            return t1;
         }
     }
 }

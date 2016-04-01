@@ -10,18 +10,22 @@ namespace randomImage
     {
         public Vector position;
         public Material material;
+        //public SColor color;
 
-        public Shape(Vector position, SColor color) {
+        public Shape(Vector position, Material material) {
             this.position = position;
-            this.material = new Material(color);
-           //this.color = color;  
+            this.material = material;
+            //this.color = color;  
         }
 
         public virtual double DoesIntersect(Vector origin, Vector direction) {
             return -1;
         }
 
-        
+        public virtual Vector NormalAtPoint(Vector point)
+        {
+            return new Vector(0,0,0);
+        }
 
-    }
+        }
 }

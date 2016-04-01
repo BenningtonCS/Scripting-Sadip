@@ -11,19 +11,9 @@ namespace randomImage
         public double ambient;
         public SColor color;
 
-        public Material(SColor color)
+        public Material(SColor color, double ambient)
         {
             this.color = color;
-        }
-
-        // setting default ambient value
-        public Material()
-        {
-            ambient = 1;
-        }
-
-        public Material(double ambient)
-        {
             this.ambient = ambient;
         }
     }

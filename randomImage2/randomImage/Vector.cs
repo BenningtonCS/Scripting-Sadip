@@ -61,21 +61,18 @@ namespace randomImage
         }
 
         // defining function to find magnitude of any given vector
-        public static double magnitude(Vector a) {
-            return Math.Sqrt(Math.Pow(a.x, 2) + Math.Pow(a.y, 2) + Math.Pow(a.z, 2));
+        public double Magnitude() {
+            return Math.Sqrt(x * x + y * y + z * z);
         }
 
         // defining function to normalize the any given vector
-        public static Vector unitVector(Vector a) {
-            return new Vector(a.x * (1/magnitude(a)), a.y * (1/magnitude(a)), a.z * (1/magnitude(a)));
-        }
-
-        public Vector Normalize(double d)
+        public Vector Normalize()
         {
-            x /= d;
-            y /= d;
-            z /= d;
-            return new Vector(x, y, z);
+            double d = Magnitude();
+            double newX =  x / d;
+            double newY = y / d;
+            double newZ = z / d;
+            return new Vector(newX, newY, newZ);
         }
 
 

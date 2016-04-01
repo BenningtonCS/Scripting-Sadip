@@ -17,6 +17,16 @@ namespace randomImage
             this.a = a;
         }
 
+        // operator overloading * sign for color and scalar number
+        public static SColor operator *(SColor color, double s) {
+            return new SColor(color.r * s, color.g * s, color.b * s, color.a);
+        }
+
+        // operator overloading + sign for addition of two color
+        public static SColor operator +(SColor x, SColor y) {
+            return new SColor(x.r + y.r, x.g + y.g, x.b + y.b, x.a);
+        }
+
         // giving each r, g, b and a gamma values 
         public int GetRedColor()
         {

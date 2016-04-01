@@ -18,9 +18,11 @@ namespace randomImage
         }
 
         // box needs to Vector position i.e. one minimum vector position and another maximum Vector position
-        public Box(Vector position, Vector maxPosition, SColor color) : base(position, color){
+        public Box(Vector position, Vector maxPosition, Material material) : base(position, material){
             this.maxPosition = maxPosition;
         }
+
+        
 
         // making does intersect method which returns t values
         public override double DoesIntersect(Vector origin, Vector direction) {
@@ -77,7 +79,26 @@ namespace randomImage
             }
 
             // so returning tmin at last
-            return txmin;
+            return txmin > txmax ? txmax : txmin;
+        }
+
+        // getting the normal of a box
+        public override Vector NormalAtPoint(Vector point)
+        {
+            if (position.x == point.x)
+                return new Vector(-1, 0, 0);
+            if (position.y == point.y)
+                return new Vector(0, -1, 0);
+            if (position.z == point.z)
+                return new Vector(0, 0, -1);
+            if (maxPosition.x == point.x)
+                return new Vector(1, 0, 0);
+            if (maxPosition.y == point.y)
+                return new Vector(0, 1, 0);
+            if (maxPosition.z == point.z)
+                return new Vector(0, 0, 1);
+
+            return new Vector();
         }
 
     }

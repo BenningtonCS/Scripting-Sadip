@@ -12,20 +12,28 @@ namespace randomImage
         //public Vector point; // this is a point on a plane which is also a Vector coordinate
 
         // plane is defined here
-        public Plane(Vector normal, Vector position, SColor color) : base(position, color){ 
+        public Plane(Vector normal, Vector position, Material material) : base(position, material)
+        {
             this.normal = normal;
         }
 
         // does the ray intersect the plane?
-        public override double DoesIntersect(Vector origin, Vector direction) {
+        public override double DoesIntersect(Vector origin, Vector direction)
+        {
             //double t; // setting the value of t as zero first
             double denominator = normal * direction; // from the formula t = ((point - Origin)*normal)/(direction * normal)
-            if (denominator != 0) {
+            if (denominator != 0)
+            {
                 Vector originToPoint = position - origin; // position vector from origin to point on the plane
                 double t = (originToPoint * normal) / denominator; // finding out the value of t from that formula
                 return t;
             }
             return -1; // otherwise it returns false that is it doesnot intersect
+        }
+
+        public override Vector NormalAtPoint(Vector point)
+        {
+            return this.normal;
         }
     }
 }
