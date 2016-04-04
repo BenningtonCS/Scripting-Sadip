@@ -31,52 +31,52 @@ namespace randomImage
             double txmax = (maxPosition.x - origin.x) / direction.x; // this is maximum x value of t
 
             // if txmin is greater than txmax than interchanging the txmin and txmax
-            if (txmin > txmax) {
+            if (txmin > txmax)
                 swap(txmin, txmax);  
-            }
+            
 
             // also doing the same process for y values of minimum and maximum positions of a box
             double tymin = (position.y - origin.y) / direction.y;
             double tymax = (maxPosition.y - origin.y) / direction.y;
 
             // if tymin is greater than tymax than interchanging both values
-            if (tymin > tymax) {
+            if (tymin > tymax) 
                 swap(tymin, tymax);
-            };
+            
 
             // ray doesnot intersect if either txmin is greater than tymax or tymin is greater than txmax
-            if ((txmin > tymax) || (tymin > txmax)) {
+            if ((txmin > tymax) || (tymin > txmax)) 
                 return -1;
-            };
+           
 
             // whereas txmax is greater than tymax than txmax will be tymax
-            if (tymax < txmax) {
+            if (tymax < txmax) 
                 txmax = tymax;
-            };
+            
 
             // similarly doing same process for z of position vectors of box i.e. minimum and maximum vectors
             double tzmin = (position.z - origin.z) /direction.z;
             double tzmax = (maxPosition.z - origin.z) / direction.z;
 
             // similarly swaping tzmin and tzmax if tzmin is greater than tzmax
-            if (tzmin > tzmax) {
+            if (tzmin > tzmax) 
                 swap(tzmin, tzmax);
-            };
+            
 
             // ray doesnot intersect either txmin is greater than tzmax or tzmin is greater than txmax
-            if ((txmin > tzmax) || (tzmin > txmax)) {
+            if ((txmin > tzmax) || (tzmin > txmax)) 
                 return -1;
-            };
+            
 
             // if tzmin is greater than txmin than assigning the value of txmin as tzmin
-            if (tzmin > txmin) {
+            if (tzmin > txmin) 
                 txmin = tzmin;
-            };
+            
 
             // if tzmax is greater than txmax than assigning the value of tzmax as txmax
-            if (tzmax < txmax) {
+            if (tzmax < txmax) 
                 txmax = tzmax;
-            }
+           
 
             // so returning tmin at last
             return txmin > txmax ? txmax : txmin;
@@ -85,17 +85,19 @@ namespace randomImage
         // getting the normal of a box
         public override Vector NormalAtPoint(Vector point)
         {
-            if (position.x == point.x)
+            const double EPSILON = 0.000001; // for precise floating point
+            // checking the condition and returning the normals of the box from different positions
+            if (position.x - point.x < EPSILON)
                 return new Vector(-1, 0, 0);
-            if (position.y == point.y)
+            if (position.y - point.y < EPSILON)
                 return new Vector(0, -1, 0);
-            if (position.z == point.z)
+            if (position.z - point.z < EPSILON)
                 return new Vector(0, 0, -1);
-            if (maxPosition.x == point.x)
+            if (maxPosition.x - point.x < EPSILON)
                 return new Vector(1, 0, 0);
-            if (maxPosition.y == point.y)
+            if (maxPosition.y - point.y < EPSILON)
                 return new Vector(0, 1, 0);
-            if (maxPosition.z == point.z)
+            if (maxPosition.z - point.z < EPSILON)
                 return new Vector(0, 0, 1);
 
             return new Vector();

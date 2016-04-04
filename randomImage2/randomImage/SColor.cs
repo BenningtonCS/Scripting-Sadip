@@ -19,13 +19,19 @@ namespace randomImage
 
         // operator overloading * sign for color and scalar number
         public static SColor operator *(SColor color, double s) {
-            return new SColor(color.r * s, color.g * s, color.b * s, color.a);
+            return new SColor(color.r * s, color.g * s, color.b * s, color.a); // double not multiplying the alpha of a color
         }
 
         // operator overloading + sign for addition of two color
         public static SColor operator +(SColor x, SColor y) {
-            return new SColor(x.r + y.r, x.g + y.g, x.b + y.b, x.a);
+            return new SColor(x.r + y.r, x.g + y.g, x.b + y.b, x.a); // for addition of two colors only alpha of the first color is returned rather than additing those two
         }
+
+        // operator overloading * sign for dot product of two color
+        public static SColor operator *(SColor x, SColor y) {
+            return new SColor(x.r * y.r, x.g * y.g, x.b * y.b, x.a);
+        }
+        
 
         // giving each r, g, b and a gamma values 
         public int GetRedColor()

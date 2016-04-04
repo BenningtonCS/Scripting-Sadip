@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algebra.cs" />
     <Compile Include="Box.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Disk.cs" />
