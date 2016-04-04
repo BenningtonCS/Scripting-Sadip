@@ -20,14 +20,15 @@ namespace randomImage
 
         public Camera(Vector position, Vector lookAt) // for the perspective camera
         {
-            this.position = position;
-            this.lookAt = lookAt;
+            this.position = position; // this is the location of the camera
+            this.lookAt = lookAt; // this is the looking point of the perspective camera
             this.fov = 52; // setting fov as 52 degree angle
             //Calculate u, v, w from position and lookAt
             Vector y = new Vector(0,1,0);
             w = (lookAt - position).Normalize(); // calculating w which is the unit position vector from position to look at point of the camera
             u = y % w; // calculating u which is the cross product of y and w
             v = w % u; // calculating v which is the cross product of w and u
+
         }
 
         public Camera(Vector position, Vector lookAt, double fov) : this(position, lookAt)
@@ -37,7 +38,7 @@ namespace randomImage
 
         public Vector convertCameraToWorldCoordinates(Vector point)
         {
-            return (u * point.x + v * point.y + w * point.z);
+            return (u * point.x + v * point.y + w * point.z); // converting into world coordinates
         }
         
         
@@ -53,8 +54,8 @@ namespace randomImage
                     //Vector coordinate = new Vector((-width / 2), (height / 2), 0) + new Vector(0.5, -0.5, 0) + new Vector(j, -i, position.z); // changing the basis i.e. in terms of i and j of the image
                     double dx = (j - (width / 2) + 0.5); // calculating dx
                     double dy = ((height / 2) - i) + 0.5; // calculating dy
-                    double dz = -(height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
-                    Vector rayDirection = new Vector(dx, dy, dz); // so vector (dx, dy, dz) will be the direction of the ray
+                    double dz = (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
+                    Vector rayDirection = convertCameraToWorldCoordinates(new Vector(dx, dy, dz)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
                     bmp.SetPixel(j, i, Color.FromArgb(255, 0, 0, 0));
 
                     Shape closestShape = scene.shapes[0]; // rendering multiple objects so searching for the closest shape to render

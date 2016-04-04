@@ -22,14 +22,14 @@ namespace randomImage
         private void Form1_Load(object sender, EventArgs e)
         {
             // making a sphere by assigning it it's parameters
-            Vector sphereCenter = new Vector(0,0,0);
+            Vector sphereCenter = new Vector(10,0,0);
             Material material1 = new Material(new SColor(1,0,1,1), 0.5);
-            Sphere sphere1 = new Sphere(20, material1, sphereCenter);
+            Sphere sphere1 = new Sphere(5, material1, sphereCenter);
           
 
-            //SColor sphereColor1 = new SColor(1, 1, 0, 1);
+            // making a sphere by assigning it it's parameters
             Vector sphereCenter1 = new Vector(0, 0, 0);
-            Sphere sphere2 = new Sphere(20, new Material(new SColor(1,1,0,1), 0.25), sphereCenter1);
+            Sphere sphere2 = new Sphere(10, new Material(new SColor(1,1,0,1), 0.25), sphereCenter1);
 
             // making a plane by assigning it it's parameters
             Vector planeNormal = new Vector(0,1,1); // this will give a plane which direction is towards the direction of camera.
@@ -38,24 +38,24 @@ namespace randomImage
 
             // making a disk by assigning it it's parameters
             Vector diskNormal = new Vector(0,1,1); // plane will be vertical  
-            Vector diskCenter = new Vector(0,30,30);
-            double diskRadius = 60;
+            Vector diskCenter = new Vector(0,-50,0);
+            double diskRadius = 30;
             Disk disk1 = new Disk(diskNormal, diskCenter, diskRadius, new Material(new SColor(0,0,1,0), 0.29));
 
 
             //making a triangle
-            Triangle triangle = new Triangle(new Vector(-100,20,0), new Vector(5,4,10), new Vector(8,2,10), new Material(new SColor(1,1,1,1), 0.25));
+            Triangle triangle = new Triangle(new Vector(0,0,0), new Vector(0,8,0), new Vector(6,0,0), new Material(new SColor(1,0,0,1), 0.25));
 
             // making a light i.e. a point light
-            Light light = new Light(new Vector(0,400,300) , 0.75, new SColor(1,1,1,1));
+            Light light = new Light(new Vector(0,300,-300) , 0.75, new SColor(1,1,1,1));
 
             // making a box by assigning it it's parameters
-            Box box1 = new Box(new Vector(100,0,0), new Vector(200,90,0), new Material(new SColor(1,1,1,1), 0.25));
+            Box box1 = new Box(new Vector(-20,-20,-20), new Vector(20,20,20), new Material(new SColor(1,1,1,1), 0.25));
             
             // setting our camera position and direction of the camera
-            Camera camera = new Camera(new Vector(0, 0, 150), new Vector(0,0,0));
+            Camera camera = new Camera(new Vector(0, 0, -100), new Vector(0,0,0));
 
-            Shape[] shapes = {sphere2};
+            Shape[] shapes = {sphere1, sphere2};
 
             Scene scene = new Scene(shapes);
 

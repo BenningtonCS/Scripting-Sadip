@@ -83,7 +83,7 @@ namespace randomImage
         {
             Vector onePointToAnother = (secondPoint - position);
             Vector anotherPointToAnother = (thirdPoint - position);
-            Vector normal = onePointToAnother % anotherPointToAnother;
+            Vector normal = (onePointToAnother % anotherPointToAnother).Normalize();
             return normal;
         }
 
