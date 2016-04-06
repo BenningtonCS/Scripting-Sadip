@@ -32,6 +32,12 @@ namespace randomImage
             return new Vector(a.x + b.x, a.y + b.y, a.z + b.z);
         }
 
+        // operation overloading for addition of vector and any scalar using + sign  
+        public static Vector operator +(Vector a, double b)
+        {
+            return new Vector(a.x + b, a.y + b, a.z + b);
+        }
+
         // operation overloading for subtraction of any two vector using - sign
         public static Vector operator -(Vector a, Vector b)
         {
@@ -47,6 +53,11 @@ namespace randomImage
         // operation overloading for product of any scalar and any vector
         public static Vector operator *(Vector a, double b) {
             return new Vector(a.x * b, a.y * b, a.z * b);
+        }
+
+        public static Vector operator *(double a, Vector b)
+        {
+            return b * a;
         }
 
         // operation overloading for cross product of any two vectors

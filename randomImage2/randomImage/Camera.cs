@@ -24,7 +24,7 @@ namespace randomImage
             this.lookAt = lookAt; // this is the looking point of the perspective camera
             this.fov = 52; // setting fov as 52 degree angle
             //Calculate u, v, w from position and lookAt
-            Vector y = new Vector(0,1,0);
+            Vector y = new Vector(0, 1, 0);
             w = (lookAt - position).Normalize(); // calculating w which is the unit position vector from position to look at point of the camera
             u = y % w; // calculating u which is the cross product of y and w
             v = w % u; // calculating v which is the cross product of w and u
@@ -40,10 +40,10 @@ namespace randomImage
         {
             return (u * point.x + v * point.y + w * point.z); // converting into world coordinates
         }
-        
-        
 
-        public void Render(Scene scene, Bitmap bmp, Light light)
+
+
+        public void Render(Scene scene, Bitmap bmp, Light[] lights)
         {
 
             // getting the color of the 
@@ -73,46 +73,60 @@ namespace randomImage
                     }
                     if (closestShape.DoesIntersect(position, rayDirection) >= 0) // checking whether the ray hits the sphere or not
                     {
-                        // for lighting
-                        Vector point = position + (rayDirection * closestT); // point of intersection 
+                        SColor color = closestShape.material.color;
+                        double ambient = closestShape.material.ambient;
+
+                        SColor lightContribution = new SColor();
+
+                        Vector point = position + (rayDirection * closestT); // point of intersection
                         Vector normal = closestShape.NormalAtPoint(point);
 
-                        Vector lightPositionToPoint = point - light.location;
-
-                        Vector lightUnitVector = lightPositionToPoint.Normalize(); //normalizing another vector
-
-    
-                        double cosineAngle = -(lightUnitVector * normal); // finding the scalar value which gives the light intensity
-                       
-                        
-
-                        // diffuse reflectance
-                        double diffuseReflectance = 1 - closestShape.material.ambient;
-
-                        // if cosineAngle will be greater than or equal to 0 then only lighting
-                        if (cosineAngle >= 0)
+                        // for multiple lighting
+                        foreach (Light light in lights)
                         {
-                           
+                            // for also checking shadows
+                            Vector shadowRayDirection = (light.location - point).Normalize(); // calculating the direction of the ray of the shadow
 
-                            /*double r = closestShape.material.color.r * colorFactor * ambient;
-                            double g = closestShape.material.color.g * colorFactor * ambient;
-                            double b = closestShape.material.color.b * colorFactor * ambient;
-                            double a = closestShape.material.color.a;*/
+                            // at first assigning inShadow variable boolean value false so that we can check whether any shape is in shadow or not
+                            bool inShadow = false; 
 
-                            SColor newColor = (closestShape.material.color * light.lightColor * light.Intensity * cosineAngle) * diffuseReflectance + (closestShape.material.color * closestShape.material.ambient);
-                            bmp.SetPixel(j, i, Color.FromArgb(newColor.GetAlphaColor(), newColor.GetRedColor(), newColor.GetGreenColor(), newColor.GetBlueColor()));
-                        }  else
-                        {
-                            SColor newColor = closestShape.material.color * closestShape.material.ambient;
-                            bmp.SetPixel(j, i, Color.FromArgb(newColor.GetAlphaColor(), newColor.GetRedColor(), newColor.GetGreenColor(), newColor.GetBlueColor()));
+                            foreach (Shape shape in scene.shapes)
+                            {
+                                //checking whether each shape is in shadow or not
+                                if (shape.DoesIntersect(point + (normal * 0.5), shadowRayDirection) >= 0)
+                                {
+                                    inShadow = true; 
+                                    break; // giving break point if it's in in shadow
+                                }
+                            }
+                            if (inShadow)
+                            {
+                                continue; // if it's in shadow than continuing that is casting a shadow
+                            }
+
+                            Vector lightToPoint = point - light.location; // position vector from light to point of intersection
+                            Vector lightDriection = lightToPoint.Normalize(); // and then normalizing it to get the direction of that vector
+                            double cosineAngle = -(lightDriection * normal); // finding the scalar value which gives the light intensity
+
+                            if (cosineAngle >= 0) 
+                            {
+                                lightContribution = lightContribution + (light.lightColor * color * cosineAngle * light.Intensity);
+                            }
                         }
-                  }
+
+                        // calculating diffuse reflectance 
+                        double diffuseReflectance = 1 - ambient;
+
+                        //
+                        SColor shapeColor = lightContribution * diffuseReflectance + (color * ambient);
+                        bmp.SetPixel(j, i, Color.FromArgb(shapeColor.GetAlphaColor(), shapeColor.GetRedColor(), shapeColor.GetGreenColor(), shapeColor.GetBlueColor()));
                     }
                 }
             }
         }
 
-    }    
+    }
+}  
 
 
 

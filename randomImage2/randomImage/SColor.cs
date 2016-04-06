@@ -9,6 +9,14 @@ namespace randomImage
     public class SColor
     {
         public double r, g, b, a;
+
+        public SColor()
+        {
+            a = 1;
+            r = 0;
+            g = 0;
+            b = 0;
+        }
         public SColor(double r, double g, double b, double a)
         {
             this.r = r;

@@ -10,14 +10,9 @@ namespace randomImage
     {
         public Vector maxPosition; // this is the another position of the box
 
-        // making a swap method for interchanging the two variables values
-        void swap(double a, double b) {
-            double t = a;
-            a = b;
-            b = t;
-        }
+      
 
-        // box needs to Vector position i.e. one minimum vector position and another maximum Vector position
+        // box needs two Vector position i.e. one minimum vector position and another maximum Vector position
         public Box(Vector position, Vector maxPosition, Material material) : base(position, material){
             this.maxPosition = maxPosition;
         }
@@ -32,7 +27,7 @@ namespace randomImage
 
             // if txmin is greater than txmax than interchanging the txmin and txmax
             if (txmin > txmax)
-                swap(txmin, txmax);  
+                Algebra.swap(txmin, txmax);  
             
 
             // also doing the same process for y values of minimum and maximum positions of a box
@@ -41,7 +36,7 @@ namespace randomImage
 
             // if tymin is greater than tymax than interchanging both values
             if (tymin > tymax) 
-                swap(tymin, tymax);
+                Algebra.swap(tymin, tymax);
             
 
             // ray doesnot intersect if either txmin is greater than tymax or tymin is greater than txmax
@@ -60,7 +55,7 @@ namespace randomImage
 
             // similarly swaping tzmin and tzmax if tzmin is greater than tzmax
             if (tzmin > tzmax) 
-                swap(tzmin, tzmax);
+                Algebra.swap(tzmin, tzmax);
             
 
             // ray doesnot intersect either txmin is greater than tzmax or tzmin is greater than txmax
