@@ -71,7 +71,7 @@ namespace randomImage
                             closestShape = shape;
                         }
                     }
-                    if (closestShape.DoesIntersect(position, rayDirection) >= 0) // checking whether the ray hits the sphere or not
+                    if (closestShape.DoesIntersect(position, rayDirection) >= 0 ) // checking whether the ray hits the sphere or not
                     {
                         SColor color = closestShape.material.color;
                         double ambient = closestShape.material.ambient;
@@ -93,7 +93,8 @@ namespace randomImage
                             foreach (Shape shape in scene.shapes)
                             {
                                 //checking whether each shape is in shadow or not
-                                if (shape.DoesIntersect(point + (normal * 0.5), shadowRayDirection) >= 0)
+                                // also checking whether the distance from the point of intersection and the direction of the ray is greater than the ray intersection distance
+                                if (shape.DoesIntersect(point + (normal * 0.5), shadowRayDirection) >= 0 && Math.Abs((light.location - point).Magnitude()) > shape.DoesIntersect(position, rayDirection))
                                 {
                                     inShadow = true; 
                                     break; // giving break point if it's in in shadow
@@ -117,7 +118,7 @@ namespace randomImage
                         // calculating diffuse reflectance 
                         double diffuseReflectance = 1 - ambient;
 
-                        //
+                        //calculating color of the shape
                         SColor shapeColor = lightContribution * diffuseReflectance + (color * ambient);
                         bmp.SetPixel(j, i, Color.FromArgb(shapeColor.GetAlphaColor(), shapeColor.GetRedColor(), shapeColor.GetGreenColor(), shapeColor.GetBlueColor()));
                     }

@@ -22,5 +22,16 @@ namespace randomImage
             b = t;
         }
 
+        //making a function to find the determinant of the given 3*3 matrix
+       /* public static double det2(double[,] arr) {
+
+            if (arr.Length > 2)
+            {
+
+            }
+
+            return determinant;
+        };*/
+
     }
 }
