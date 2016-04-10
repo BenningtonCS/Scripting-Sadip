@@ -13,24 +13,39 @@ namespace randomImage
         public Vector position, u, v, w, lookAt;
         public double fov;
         public int numberOfSamples;
-        public int height = 500;
-        public int width = 500;
+        public int numberOfJittered;
+        public int height = 600;
+        public int width = 600;
         public double pixelSize = 1;
+        //public String typeOfSampling;
         //public Vector direction;
-        
+
 
         public Camera(Vector position, Vector lookAt) // for the perspective camera
         {
             this.position = position; // this is the location of the camera
             this.lookAt = lookAt; // this is the looking point of the perspective camera
             this.fov = 52; // setting fov as 52 degree angle
-            this.numberOfSamples = 80; // setting number 
+            this.numberOfSamples = 1; // setting number of samples to be 1 as default
+            this.numberOfJittered = 1; // setting number of jittered to be 1 as default
             //Calculate u, v, w from position and lookAt
             Vector y = new Vector(0, 1, 0);
             w = (lookAt - position).Normalize(); // calculating w which is the unit position vector from position to look at point of the camera
             u = y % w; // calculating u which is the cross product of y and w
             v = w % u; // calculating v which is the cross product of w and u
 
+        }
+
+        // constructor initializer list
+        public Camera(Vector position, Vector lookAt, int numberOfSamples) : this(position, lookAt){
+            this.numberOfSamples = numberOfSamples;
+        }
+
+
+
+        //constructor initializer list
+        public Camera(Vector position, Vector lookAt, double fov) :this(position, lookAt){
+            this.fov = fov;
         }
 
         // constructor initializer list
@@ -49,7 +64,7 @@ namespace randomImage
 
         public void Render(Scene scene, Bitmap bmp, Light[] lights)
         {
-            
+
 
             // getting the color of the 
             for (int i = 0; i < height; i++)
@@ -65,29 +80,56 @@ namespace randomImage
                     //giving background color as black at first
                     bmp.SetPixel(j, i, Color.FromArgb(255, 0, 0, 0));
 
+
+
                     //this is the loop for anti-aliasing(AA) that is number of samples
-                    for (int k = 0; k < numberOfSamples; k++) {
-
-                    double m = randomNumber.NextDouble(); // gives random number between 0 and 1
-                    //Vector coordinate = new Vector((-width / 2), (height / 2), 0) + new Vector(0.5, -0.5, 0) + new Vector(j, -i, position.z); // changing the basis i.e. in terms of i and j of the image
-                    double dx = (j - (width / 2) + m); // calculating dx
-                    double dy = ((height / 2) - i) + m; // calculating dy
-                    double dz = (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
-                    Vector rayDirection = convertCameraToWorldCoordinates(new Vector(dx, dy, dz)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
-
-                    Shape closestShape = scene.shapes[0]; // rendering multiple objects so searching for the closest shape to render
-
-                    double closestT = double.MaxValue; // shape which has closest T need to be rendered at first
-
-                    foreach (Shape shape in scene.shapes)
+                    for (int k = 0; k < (numberOfSamples > 1 ? numberOfSamples : Math.Pow(numberOfJittered, 2)); k++)
                     {
-                        double t = shape.DoesIntersect(this.position, rayDirection);
-                        if ((t < closestT) && (t >= 0))
+                        Vector rayDirection;
+                        //double[] jitteredMidPoints = { };
+
+                        //checking number of jittered is given or not through it's default value 
+                        //that is if number of jittered is not given than calculating as usual number of sampling way 
+                        //otherwise that is if number of jittered is given than calculating number of jitterd out of it and checking through midpoints of those number of samples of each pixel
+                        if (numberOfJittered == 1)
                         {
-                            closestT = t;
-                            closestShape = shape;
+                            double m = randomNumber.NextDouble(); // gives random number between 0 and 1
+                            //Vector coordinate = new Vector((-width / 2), (height / 2), 0) + new Vector(0.5, -0.5, 0) + new Vector(j, -i, position.z); // changing the basis i.e. in terms of i and j of the image
+                            //if number of samplings is 1 then here the value of m will be 0.5 otherwise it will bw m which is the random number from 0 to 1
+                            double dx = j - (width / 2) + (numberOfSamples == 1 ? 0.5 : m); // calculating dx
+                            double dy = ((height / 2) - i) + (numberOfSamples == 1 ? 0.5 : m); // calculating dy
+                            double dz = (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
+                            rayDirection = convertCameraToWorldCoordinates(new Vector(dx, dy, dz)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
+
                         }
-                    }
+                        else
+                        {
+                          
+                            
+                            double m = 1 / (2 * k + 1);
+                            double n = 1 / (2 * k + 1);
+
+                            double dx = j - (width / 2) + (m); // calculating dx
+                            double dy = ((height / 2) - i) + (n); // calculating dy
+                            double dz = (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
+                            rayDirection = convertCameraToWorldCoordinates(new Vector(dx, dy, dz)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
+
+                        }
+
+
+                        Shape closestShape = scene.shapes[0]; // rendering multiple objects so searching for the closest shape to render
+
+                        double closestT = double.MaxValue; // shape which has closest T need to be rendered at first
+
+                        foreach (Shape shape in scene.shapes)
+                        {
+                            double t = shape.DoesIntersect(this.position, rayDirection);
+                            if ((t < closestT) && (t >= 0))
+                            {
+                                closestT = t;
+                                closestShape = shape;
+                            }
+                        }
                         if (closestShape.DoesIntersect(position, rayDirection) >= 0) // checking whether the ray hits the sphere or not
                         {
                             SColor color = closestShape.material.color;
@@ -136,20 +178,21 @@ namespace randomImage
                             double diffuseReflectance = 1 - ambient;
 
                             //calculating color of the shape
-                             SColor shapeColor = lightContribution * diffuseReflectance + (color * ambient);
-                            
+                            SColor shapeColor = lightContribution * diffuseReflectance + (color * ambient);
+
                             // adding all the color of the samples that is given for multi sampling
                             samplingColor += shapeColor;
-                       }
-
-                        //taking the average of the color of those all samples
-                        SColor colorSampling = samplingColor / numberOfSamples;
-
-                        //now giving that average color of all those samples
-                        bmp.SetPixel(j, i, Color.FromArgb(colorSampling.GetAlphaColor(), colorSampling.GetRedColor(), colorSampling.GetGreenColor(), colorSampling.GetBlueColor()));
+                        }
                     }
+
+                    //taking the average of the color of those all samples
+                    SColor colorSampling = samplingColor / numberOfSamples;
+
+                    //now giving that average color of all those samples
+                    bmp.SetPixel(j, i, Color.FromArgb(colorSampling.GetAlphaColor(), colorSampling.GetRedColor(), colorSampling.GetGreenColor(), colorSampling.GetBlueColor()));
                 }
-            }
+            }   
+            
         }
 
     }
