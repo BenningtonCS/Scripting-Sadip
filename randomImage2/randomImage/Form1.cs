@@ -22,9 +22,9 @@ namespace randomImage
         private void Form1_Load(object sender, EventArgs e)
         {
             // making a sphere by assigning it it's parameters
-            Vector sphereCenter = new Vector(10,0,0);
+            Vector sphereCenter = new Vector(0,0,0);
             Material material1 = new Material(new SColor(1,0,1,1), 0.5);
-            Sphere sphere1 = new Sphere(5, material1, sphereCenter);
+            Sphere sphere1 = new Sphere(10, material1, sphereCenter);
           
 
             // making a sphere by assigning it it's parameters
@@ -50,21 +50,21 @@ namespace randomImage
             Triangle triangle = new Triangle(new Vector(0,0,0), new Vector(0,8,0), new Vector(6,0,0), new Material(new SColor(1,0,0,1), 0.25));
 
             // making a light i.e. a point light
-            Light light1 = new Light(new Vector(0,200,-200) , 0.75, new SColor(1,1,1,1));
+            Light light1 = new Light(new Vector(-20,30,2) , 0.75, new SColor(1,1,1,1));
 
             // making another light 
             Light light2 = new Light(new Vector(100, 200, -200), 0.75, new SColor(1, 1, 1, 1));
 
             // making a box by assigning it it's parameters
-            Box box1 = new Box(new Vector(-5,-5,-5), new Vector(5,5,5), new Material(new SColor(1,1,0,1), 0.25));
+            Box box1 = new Box(new Vector(-25,15,10), new Vector(-15,20,25), new Material(new SColor(1,0,0,1)));
             
             // setting our camera position and direction of the camera
-            Camera camera = new Camera(new Vector(0, 0, -100), new Vector(0,0,0));
-            //camera.numberOfSamples = 3;
-            camera.numberOfJittered = 8;
+            Camera camera = new Camera(new Vector(0,0,-100), new Vector(0,0,0));
+            //camera.numberOfSamples = 64;
+            //camera.numberOfJittered = 8;
 
             // array for multiple shapes
-            Shape[] shapes = {sphere1, sphere2, plane1, disk1};
+            Shape[] shapes = {sphere1, plane1, sphere2, disk1};
 
             // array for multiple lights
             Light[] lights = {light1, light2};

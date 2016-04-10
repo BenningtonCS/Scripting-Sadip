@@ -82,17 +82,17 @@ namespace randomImage
         {
             const double EPSILON = 0.000001; // for precise floating point
             // checking the condition and returning the normals of the box from different positions
-            if (position.x - point.x < EPSILON)
+            if (Math.Abs(position.x - point.x) < EPSILON)
                 return new Vector(-1, 0, 0);
-            if (position.y - point.y < EPSILON)
+            if (Math.Abs(position.y - point.y) < EPSILON)
                 return new Vector(0, -1, 0);
-            if (position.z - point.z < EPSILON)
+            if (Math.Abs(position.z - point.z) < EPSILON)
                 return new Vector(0, 0, -1);
-            if (maxPosition.x - point.x < EPSILON)
+            if (Math.Abs(maxPosition.x - point.x) < EPSILON)
                 return new Vector(1, 0, 0);
-            if (maxPosition.y - point.y < EPSILON)
+            if (Math.Abs(maxPosition.y - point.y) < EPSILON)
                 return new Vector(0, 1, 0);
-            if (maxPosition.z - point.z < EPSILON)
+            if (Math.Abs(maxPosition.z - point.z) < EPSILON)
                 return new Vector(0, 0, 1);
 
             return new Vector();

@@ -10,6 +10,7 @@ namespace randomImage
     {
         public double r, g, b, a;
 
+        //making default color as black color
         public SColor()
         {
             a = 1;
@@ -17,6 +18,7 @@ namespace randomImage
             g = 0;
             b = 0;
         }
+
         public SColor(double r, double g, double b, double a)
         {
             this.r = r;
@@ -30,9 +32,20 @@ namespace randomImage
             return new SColor(color.r * s, color.g * s, color.b * s, color.a * s); // double not multiplying the alpha of a color
         }
 
+        //operator overloading * sign for color and scalar nuber 
+        public static SColor operator *(double s, SColor color) {
+            return color * s;
+        }
+
         //operator overloading / sign for color and scalar number
         public static SColor operator /(SColor color, double s) {
             return new SColor(color.r / s, color.g / s, color.b / s, color.a / s);
+        }
+
+        //operator overloading / sign for color and scalar number
+        public static SColor operator /(double s, SColor color)
+        {
+            return color / s;
         }
 
         // operator overloading + sign for addition of two color

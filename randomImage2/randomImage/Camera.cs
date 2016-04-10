@@ -14,8 +14,8 @@ namespace randomImage
         public double fov;
         public int numberOfSamples;
         public int numberOfJittered;
-        public int height = 600;
-        public int width = 600;
+        public int height = 650;
+        public int width = 650;
         public double pixelSize = 1;
         //public String typeOfSampling;
         //public Vector direction;
@@ -29,9 +29,15 @@ namespace randomImage
             this.numberOfSamples = 1; // setting number of samples to be 1 as default
             this.numberOfJittered = 1; // setting number of jittered to be 1 as default
             //Calculate u, v, w from position and lookAt
-            Vector y = new Vector(0, 1, 0);
+            Vector cameraMoveVector = new Vector(0, 1, 0);
+
+            //to make the camera to move 
+            //checking whether the x and y coordinates of position of camera to be zero than giving it's camera move vector to be new vector that is (1,0,0)
+           if (position.x == 0 && position.z == 0)
+                cameraMoveVector = new Vector(1, 0, 0);
+
             w = (lookAt - position).Normalize(); // calculating w which is the unit position vector from position to look at point of the camera
-            u = y % w; // calculating u which is the cross product of y and w
+            u = cameraMoveVector % w; // calculating u which is the cross product of y and w
             v = w % u; // calculating v which is the cross product of w and u
 
         }
@@ -83,7 +89,7 @@ namespace randomImage
 
 
                     //this is the loop for anti-aliasing(AA) that is number of samples
-                    for (int k = 0; k < (numberOfSamples > 1 ? numberOfSamples : Math.Pow(numberOfJittered, 2)); k++)
+                    for (int k = 0; k < (numberOfSamples >= 1 ? numberOfSamples : Math.Pow(numberOfJittered, 2)); k++)
                     {
                         Vector rayDirection;
                         //double[] jitteredMidPoints = { };
@@ -91,11 +97,13 @@ namespace randomImage
                         //checking number of jittered is given or not through it's default value 
                         //that is if number of jittered is not given than calculating as usual number of sampling way 
                         //otherwise that is if number of jittered is given than calculating number of jitterd out of it and checking through midpoints of those number of samples of each pixel
+
                         if (numberOfJittered == 1)
                         {
                             double m = randomNumber.NextDouble(); // gives random number between 0 and 1
                             //Vector coordinate = new Vector((-width / 2), (height / 2), 0) + new Vector(0.5, -0.5, 0) + new Vector(j, -i, position.z); // changing the basis i.e. in terms of i and j of the image
-                            //if number of samplings is 1 then here the value of m will be 0.5 otherwise it will bw m which is the random number from 0 to 1
+                            
+                            //if number of samplings is 1 then here the value of m will be 0.5 otherwise it will be m which is the random number from 0 to 1
                             double dx = j - (width / 2) + (numberOfSamples == 1 ? 0.5 : m); // calculating dx
                             double dy = ((height / 2) - i) + (numberOfSamples == 1 ? 0.5 : m); // calculating dy
                             double dz = (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
@@ -104,13 +112,13 @@ namespace randomImage
                         }
                         else
                         {
-                          
                             
-                            double m = 1 / (2 * k + 1);
-                            double n = 1 / (2 * k + 1);
+                            double m = (2 * k + 1)/numberOfSamples;
+                           
+                            //double n = (2 * k + 1)/numberOfSamples;
 
-                            double dx = j - (width / 2) + (m); // calculating dx
-                            double dy = ((height / 2) - i) + (n); // calculating dy
+                            double dx = j - (width / 2) + (numberOfSamples == 1 ? 0.5 : m); // calculating dx
+                            double dy = ((height / 2) - i) + (numberOfSamples == 1 ? 0.5 : m); // calculating dy
                             double dz = (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
                             rayDirection = convertCameraToWorldCoordinates(new Vector(dx, dy, dz)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
 
