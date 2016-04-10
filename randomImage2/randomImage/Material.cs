@@ -17,6 +17,7 @@ namespace randomImage
             this.ambient = 1; // making default ambient value to be 1
         }
 
+        //constructor initializer list
         public Material(SColor color, double ambient) : this(color) {
             this.ambient = ambient; // making ambient to be optional and assigning it's default value
         }

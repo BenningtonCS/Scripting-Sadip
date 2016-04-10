@@ -40,8 +40,8 @@ namespace randomImage
             Plane  plane1 = new Plane(planeNormal, planePoint, new Material(new SColor(1,1,1,1), 0.25));
 
             // making a disk by assigning it it's parameters
-            Vector diskNormal = new Vector(0,1,1); // plane will be vertical  
-            Vector diskCenter = new Vector(0,-10,10);
+            Vector diskNormal = new Vector(0,1,0); // plane will be vertical  
+            Vector diskCenter = new Vector(0,-10,0);
             double diskRadius = 20;
             Disk disk1 = new Disk(diskNormal, diskCenter, diskRadius, new Material(new SColor(0,1,1,1), 0.29));
 
@@ -62,7 +62,7 @@ namespace randomImage
             Camera camera = new Camera(new Vector(0, 0, -100), new Vector(0,0,0));
 
             // array for multiple shapes
-            Shape[] shapes = {sphere3, sphere1, sphere2, plane1/*, disk1*/};
+            Shape[] shapes = {sphere3, sphere1, sphere2, plane1, disk1};
 
             // array for multiple lights
             Light[] lights = {light1, light2};

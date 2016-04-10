@@ -30,6 +30,11 @@ namespace randomImage
             return new SColor(color.r * s, color.g * s, color.b * s, color.a * s); // double not multiplying the alpha of a color
         }
 
+        //operator overloading / sign for color and scalar number
+        public static SColor operator /(SColor color, double s) {
+            return new SColor(color.r / s, color.g / s, color.b / s, color.a / s);
+        }
+
         // operator overloading + sign for addition of two color
         public static SColor operator +(SColor x, SColor y) {
             return new SColor(x.r + y.r, x.g + y.g, x.b + y.b, x.a + y.a); // for addition of two colors only alpha of the first color is returned rather than additing those two
