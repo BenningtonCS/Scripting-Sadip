@@ -14,8 +14,8 @@ namespace randomImage
         public double fov;
         public int numberOfSamples;
         public int numberOfJittered;
-        public int height = 650;
-        public int width = 650;
+        public int height = 1200;
+        public int width = 1200;
         public double pixelSize = 1;
         //public String typeOfSampling;
         //public Vector direction;
@@ -66,11 +66,19 @@ namespace randomImage
             return (u * point.x + v * point.y + w * point.z); // converting into world coordinates
         }
 
-
+        
 
         public void Render(Scene scene, Bitmap bmp, Light[] lights)
         {
+            //creating a array for storing different types of combinations for jittered sampling
+            double[] possibleCombinations = new double[numberOfJittered];
 
+            //if jittered is given then only it will push variables to the array
+            if (numberOfJittered > 1) {
+                for (int l = 0; l < numberOfJittered; l++) {
+                    possibleCombinations[l] = (double)(2*l + 1)/(numberOfJittered * 2);
+                }
+            }
 
             // getting the color of the 
             for (int i = 0; i < height; i++)
@@ -89,7 +97,9 @@ namespace randomImage
 
 
                     //this is the loop for anti-aliasing(AA) that is number of samples
-                    for (int k = 0; k < (numberOfSamples >= 1 ? numberOfSamples : Math.Pow(numberOfJittered, 2)); k++)
+                    if (numberOfJittered > 1) numberOfSamples = (int)Math.Pow(numberOfJittered, 2);
+
+                    for (int k = 0; k < numberOfSamples; k++)
                     {
                         Vector rayDirection;
                         //double[] jitteredMidPoints = { };
@@ -112,13 +122,14 @@ namespace randomImage
                         }
                         else
                         {
-                            
-                            double m = (2 * k + 1)/numberOfSamples;
-                           
-                            //double n = (2 * k + 1)/numberOfSamples;
+                            int kX = (k % numberOfJittered); // this is for finding the index of the array for giving possible value of mid points of jittered grid
 
-                            double dx = j - (width / 2) + (numberOfSamples == 1 ? 0.5 : m); // calculating dx
-                            double dy = ((height / 2) - i) + (numberOfSamples == 1 ? 0.5 : m); // calculating dy
+                            int kY = (k / numberOfJittered); // this is for finding the next index of the array for giving possible value pf mid points of jittered grid
+
+                            //Debug.Assert(kX == 0.25);
+                            
+                            double dx = j - (width / 2) + (numberOfSamples == 1 ? 0.5 : possibleCombinations[kX]); // calculating dx where possible combination is given by indexing the array
+                            double dy = ((height / 2) - i) + (numberOfSamples == 1 ? 0.5 : possibleCombinations[kY]); // calculating dy
                             double dz = (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
                             rayDirection = convertCameraToWorldCoordinates(new Vector(dx, dy, dz)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
 

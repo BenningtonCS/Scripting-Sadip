@@ -60,8 +60,8 @@ namespace randomImage
             
             // setting our camera position and direction of the camera
             Camera camera = new Camera(new Vector(0,0,-100), new Vector(0,0,0));
-            //camera.numberOfSamples = 64;
-            //camera.numberOfJittered = 8;
+            //camera.numberOfSamples = 4;
+            camera.numberOfJittered = 5;
 
             // array for multiple shapes
             Shape[] shapes = {sphere1, plane1, sphere2, disk1};
