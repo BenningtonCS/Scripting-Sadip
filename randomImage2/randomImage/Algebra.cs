@@ -22,16 +22,23 @@ namespace randomImage
             b = t;
         }
 
+        //
+        public static double getRandomNumber(double minimum, double maximum)
+        {
+            Random random = new Random();
+            return random.NextDouble() * (maximum - minimum) + minimum;
+        }
+
         //making a function to find the determinant of the given 3*3 matrix
-       /* public static double det2(double[,] arr) {
+        /* public static double det2(double[,] arr) {
 
-            if (arr.Length > 2)
-            {
+             if (arr.Length > 2)
+             {
 
-            }
+             }
 
-            return determinant;
-        };*/
+             return determinant;
+         };*/
 
     }
 }

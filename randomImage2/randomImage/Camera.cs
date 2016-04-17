@@ -14,11 +14,16 @@ namespace randomImage
         public double fov;
         public int numberOfSamples;
         public int numberOfJittered;
-        public int height = 1200;
-        public int width = 1200;
+        public int height = 600;
+        public int width = 600;
         public double pixelSize = 1;
+
+
+        private double apertureSize;
+        private double focalLength;
+        private bool DOFUsed;
         //public String typeOfSampling;
-        //public Vector direction;
+        
 
 
         public Camera(Vector position, Vector lookAt) // for the perspective camera
@@ -47,8 +52,6 @@ namespace randomImage
             this.numberOfSamples = numberOfSamples;
         }
 
-
-
         //constructor initializer list
         public Camera(Vector position, Vector lookAt, double fov) :this(position, lookAt){
             this.fov = fov;
@@ -61,12 +64,17 @@ namespace randomImage
             this.numberOfSamples = numberOfSamples; // setting numberOfSamples as optional parameter for defining the camera
         }
 
+        public void useDOF(double apertureSize, double focalLength)
+        {
+            this.apertureSize = apertureSize;
+            this.focalLength = focalLength;
+            DOFUsed = true;
+        }
+
         public Vector convertCameraToWorldCoordinates(Vector point)
         {
             return (u * point.x + v * point.y + w * point.z); // converting into world coordinates
         }
-
-        
 
         public void Render(Scene scene, Bitmap bmp, Light[] lights)
         {
@@ -102,6 +110,8 @@ namespace randomImage
                     for (int k = 0; k < numberOfSamples; k++)
                     {
                         Vector rayDirection;
+                        Vector focalPoint;
+                        //Vector cameraPosition;
                         //double[] jitteredMidPoints = { };
 
                         //checking number of jittered is given or not through it's default value 
@@ -111,14 +121,30 @@ namespace randomImage
                         if (numberOfJittered == 1)
                         {
                             double m = randomNumber.NextDouble(); // gives random number between 0 and 1
+
+                            ////
                             //Vector coordinate = new Vector((-width / 2), (height / 2), 0) + new Vector(0.5, -0.5, 0) + new Vector(j, -i, position.z); // changing the basis i.e. in terms of i and j of the image
-                            
+                            ////
+
                             //if number of samplings is 1 then here the value of m will be 0.5 otherwise it will be m which is the random number from 0 to 1
                             double dx = j - (width / 2) + (numberOfSamples == 1 ? 0.5 : m); // calculating dx
                             double dy = ((height / 2) - i) + (numberOfSamples == 1 ? 0.5 : m); // calculating dy
                             double dz = (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
                             rayDirection = convertCameraToWorldCoordinates(new Vector(dx, dy, dz)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
 
+                            if (DOFUsed)
+                            {
+                                focalPoint = position + focalLength * rayDirection;
+                                
+                                double randomRadius = Algebra.getRandomNumber(0,apertureSize);
+                                double randomAngle = Algebra.getRandomNumber(0, 2 * Math.PI);
+                                double xPositionOfCamera = randomRadius * Math.Cos(Algebra.convertToRad(randomAngle));
+                                double yPositionOfCamera = randomRadius * Math.Sin(Algebra.convertToRad(randomAngle));
+                                position.x = xPositionOfCamera;
+                                position.y = yPositionOfCamera;
+                                Vector newRayDirection = (focalPoint - position).Normalize();
+                                rayDirection = convertCameraToWorldCoordinates(new Vector(newRayDirection.x, newRayDirection.y, newRayDirection.z)).Normalize();
+                            }
                         }
                         else
                         {
@@ -133,6 +159,20 @@ namespace randomImage
                             double dz = (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
                             rayDirection = convertCameraToWorldCoordinates(new Vector(dx, dy, dz)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
 
+
+                            if (DOFUsed)
+                            {
+                                focalPoint = position + focalLength * rayDirection;
+
+                                double randomRadius = Algebra.getRandomNumber(0, apertureSize);
+                                double randomAngle = Algebra.getRandomNumber(0, 2 * 180);
+                                double xPositionOfCamera = randomRadius * Math.Cos(Algebra.convertToRad(randomAngle));
+                                double yPositionOfCamera = randomRadius * Math.Sin(Algebra.convertToRad(randomAngle));
+                                position.x = xPositionOfCamera;
+                                position.y = yPositionOfCamera;
+                                Vector newRayDirection = (focalPoint - position).Normalize();
+                                rayDirection = convertCameraToWorldCoordinates(new Vector(newRayDirection.x, newRayDirection.y, newRayDirection.z)).Normalize();
+                            }
                         }
 
 
@@ -142,7 +182,7 @@ namespace randomImage
 
                         foreach (Shape shape in scene.shapes)
                         {
-                            double t = shape.DoesIntersect(this.position, rayDirection);
+                            double t = shape.DoesIntersect(position, rayDirection);
                             if ((t < closestT) && (t >= 0))
                             {
                                 closestT = t;
