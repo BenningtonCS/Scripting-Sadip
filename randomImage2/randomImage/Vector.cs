@@ -8,14 +8,16 @@ namespace randomImage
 {
     public class Vector
     {
-        public double x, y, z;
-
+        public double x, y, z, w;
+        //private bool is4D;
+         
         // setting a default vector
         public Vector()
         {
             x = 0;
             y = 0;
             z = 0;
+            //is4D = false;
         }
 
         // constructing a vector
@@ -24,12 +26,21 @@ namespace randomImage
             this.x = x;
             this.y = y;
             this.z = z;
+           // is4D = false;
+        }
+
+        public Vector(double x, double y, double z, double w) : this(x, y, z)
+        {
+            this.w = w;
+           // is4D = true;
         }
 
         // operation overloading for addtion of any two vector using + sign
         public static Vector operator +(Vector a, Vector b)
         {
-            return new Vector(a.x + b.x, a.y + b.y, a.z + b.z);
+           // if (!a.is4D && !b.is4D)
+                return new Vector(a.x + b.x, a.y + b.y, a.z + b.z);
+           // return new Vector(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
         }
 
         // operation overloading for addition of vector and any scalar using + sign  
@@ -86,6 +97,6 @@ namespace randomImage
             return new Vector(newX, newY, newZ);
         }
 
-
+        
     }
 }

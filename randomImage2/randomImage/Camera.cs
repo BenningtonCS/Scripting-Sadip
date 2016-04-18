@@ -64,6 +64,8 @@ namespace randomImage
             this.numberOfSamples = numberOfSamples; // setting numberOfSamples as optional parameter for defining the camera
         }
 
+        // making a methos for checking whether depth of field is given for the camera or not
+        // so that it will easier for to check it and then only continue calculating other things for blur image
         public void useDOF(double apertureSize, double focalLength)
         {
             this.apertureSize = apertureSize;
@@ -71,11 +73,13 @@ namespace randomImage
             DOFUsed = true;
         }
 
+        // this helps to convert to world camera coordinates for perspective camera
         public Vector convertCameraToWorldCoordinates(Vector point)
         {
             return (u * point.x + v * point.y + w * point.z); // converting into world coordinates
         }
 
+     
         public void Render(Scene scene, Bitmap bmp, Light[] lights)
         {
             //creating a array for storing different types of combinations for jittered sampling
@@ -111,8 +115,7 @@ namespace randomImage
                     {
                         Vector rayDirection;
                         Vector focalPoint;
-                        //Vector cameraPosition;
-                        //double[] jitteredMidPoints = { };
+      
 
                         //checking number of jittered is given or not through it's default value 
                         //that is if number of jittered is not given than calculating as usual number of sampling way 
@@ -132,16 +135,27 @@ namespace randomImage
                             double dz = (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
                             rayDirection = convertCameraToWorldCoordinates(new Vector(dx, dy, dz)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
 
+                            //checking whether the depth of field is given or not
                             if (DOFUsed)
                             {
+                                //finding the focal point or focus of the camera
                                 focalPoint = position + focalLength * rayDirection;
                                 
+                                //getting random value for aperture size that is the radius if the circle which will be in blur
                                 double randomRadius = Algebra.getRandomNumber(0,apertureSize);
+
+                                //similarly getting the random angle of the circle for getting the random point in the aperture size or the circle in focus
                                 double randomAngle = Algebra.getRandomNumber(0, 2 * Math.PI);
+
+                                //new x and y positions of camera are determined by random radius and random angle of circle having radius equal to  aperture size 
                                 double xPositionOfCamera = randomRadius * Math.Cos(Algebra.convertToRad(randomAngle));
                                 double yPositionOfCamera = randomRadius * Math.Sin(Algebra.convertToRad(randomAngle));
+
+                                //here assigning new x and y values for camera 
                                 position.x = xPositionOfCamera;
                                 position.y = yPositionOfCamera;
+
+                                //similarly finding new ray direction and converting to world coordinates and getting it's unit vector 
                                 Vector newRayDirection = (focalPoint - position).Normalize();
                                 rayDirection = convertCameraToWorldCoordinates(new Vector(newRayDirection.x, newRayDirection.y, newRayDirection.z)).Normalize();
                             }
@@ -162,14 +176,24 @@ namespace randomImage
 
                             if (DOFUsed)
                             {
+                                //finding the focal point or focus of the camera
                                 focalPoint = position + focalLength * rayDirection;
 
+                                //getting random value for aperture size that is the radius if the circle which will be in blur
                                 double randomRadius = Algebra.getRandomNumber(0, apertureSize);
-                                double randomAngle = Algebra.getRandomNumber(0, 2 * 180);
+
+                                //similarly getting the random angle of the circle for getting the random point in the aperture size or the circle in focus
+                                double randomAngle = Algebra.getRandomNumber(0, 2 * Math.PI);
+
+                                //new x and y positions of camera are determined by random radius and random angle of circle having radius equal to  aperture size 
                                 double xPositionOfCamera = randomRadius * Math.Cos(Algebra.convertToRad(randomAngle));
                                 double yPositionOfCamera = randomRadius * Math.Sin(Algebra.convertToRad(randomAngle));
+
+                                //here assigning new x and y values for camera 
                                 position.x = xPositionOfCamera;
                                 position.y = yPositionOfCamera;
+
+                                //similarly finding new ray direction and converting to world coordinates and getting it's unit vector 
                                 Vector newRayDirection = (focalPoint - position).Normalize();
                                 rayDirection = convertCameraToWorldCoordinates(new Vector(newRayDirection.x, newRayDirection.y, newRayDirection.z)).Normalize();
                             }

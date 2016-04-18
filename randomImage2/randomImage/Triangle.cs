@@ -18,8 +18,32 @@ namespace randomImage
 
         public override double DoesIntersect(Vector origin, Vector direction)
         {
+            Matrix A = new Matrix(new Vector(position.x - secondPoint.x, position.y - secondPoint.y, position.z - secondPoint.z), new Vector(position.x - thirdPoint.x, position.y - thirdPoint.y, position.z - thirdPoint.z), new Vector(direction.x, direction.y, direction.z));
 
-            return 0;
+            Matrix A0 = new Matrix(new Vector(position.x - origin.x, position.y - origin.y, position.z - origin.z), new Vector(position.x - thirdPoint.x, position.y - thirdPoint.y, position.z - thirdPoint.z), new Vector(direction.x, direction.y, direction.z));
+
+            Matrix A1 = new Matrix(new Vector(position.x - secondPoint.x, position.y - secondPoint.y, position.z - secondPoint.z), new Vector(position.x - origin.x, position.y - origin.y, position.z - origin.z), new Vector(direction.x, direction.y, direction.z));
+
+
+            double beta = (A0.Determinant()) / (A1.Determinant());
+
+            double gamma = (A1.Determinant()) / (A.Determinant());
+
+            if ((beta + gamma) > 1)
+                return -1;
+
+            
+
+            double alpha = 1 - (beta + gamma);
+
+            if ((0 < alpha && alpha < 1) && (0 < beta && beta < 1) && (0 < gamma && gamma < 1) && (beta + gamma) < 1 && (alpha + beta) < 1 && (alpha + gamma) < 1)
+            {
+                Matrix A2 = new Matrix(new Vector(position.x - secondPoint.x, position.y - secondPoint.y, position.z - secondPoint.z), new Vector(position.x - thirdPoint.x, position.y - thirdPoint.y, position.z - thirdPoint.z), new Vector(position.x - origin.x, position.y - origin.y, position.z - origin.z));
+
+                double t = (A2.Determinant()) / (A.Determinant());
+                return t;
+            }
+            return -1;
         }
 
         // to find the normal of a triangle

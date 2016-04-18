@@ -28,8 +28,8 @@ namespace randomImage
           
 
             // making a sphere by assigning it it's parameters
-            Vector sphereCenter1 = new Vector(0, 0, 0);
-            Sphere sphere2 = new Sphere(10, new Material(new SColor(1,1,0,1), 0.25), sphereCenter1);
+            Vector sphereCenter1 = new Vector(30, 0, -10);
+            Sphere sphere2 = new Sphere(4, new Material(new SColor(1,1,0,1), 0.25), sphereCenter1);
 
             //making a sphere by assigning it it's parameters
             Sphere sphere3 = new Sphere(1, new Material(new SColor(1,0,0,1)), new Vector(5,40,-60));
@@ -47,7 +47,7 @@ namespace randomImage
 
 
             //making a triangle
-            Triangle triangle = new Triangle(new Vector(0,0,0), new Vector(0,8,0), new Vector(6,0,0), new Material(new SColor(1,0,0,1), 0.25));
+            Triangle triangle = new Triangle(new Vector(0,10,0), new Vector(10,-10,0), new Vector(-10,-10,0), new Material(new SColor(1,1,0,1), 0.25));
 
             // making a light i.e. a point light
             Light light1 = new Light(new Vector(-20,30,2) , 0.75, new SColor(1,1,1,1));
@@ -56,16 +56,16 @@ namespace randomImage
             Light light2 = new Light(new Vector(100, 200, -200), 0.75, new SColor(1, 1, 1, 1));
 
             // making a box by assigning it it's parameters
-            Box box1 = new Box(new Vector(-25,15,10), new Vector(-15,20,25), new Material(new SColor(1,0,0,1)));
+            Box box1 = new Box(new Vector(5,5,5), new Vector(15,15,15), new Material(new SColor(1,1,0,1)));
             
             // setting our camera position and direction of the camera
             Camera camera = new Camera(new Vector(0,0,-100), new Vector(0,0,0));
-            camera.numberOfSamples = 4;
+            //camera.numberOfSamples = 40;
             //camera.numberOfJittered = 2;
-            camera.useDOF(3, 16);
+            //camera.useDOF(3, 16);
      
             // array for multiple shapes
-            Shape[] shapes = {sphere1, sphere2, disk1};
+            Shape[] shapes = {triangle, plane1};
 
             // array for multiple lights
             Light[] lights = {light1, light2};
