@@ -8,35 +8,13 @@ namespace randomImage
 {
     class Ray
     {
-        /*private Vector origin;
-        private Vector direction;
-        public Vector getOrigin()
+        public Vector origin;
+        public Vector direction;
+
+        public Ray(Vector o, Vector d)
         {
-            return this.origin;
+            this.origin = o;
+            this.direction = d;
         }
-
-        public Vector getDirection()
-        {
-            return this.direction;
-        }
-        
-        public static double getT (){
-
-
-            // to compute -d.(o - c) +- sqrt((d * (o - c))^2 - ((o - c)(o - c) - r^2)) which is equal to t
-
-            // first find out (o - c)
-            
-            Vector originToPosition = (Camera.position - Sphere.center);
-            double directionTimesOToC = direction * originToPosition;
-
-            double t1 = -directionTimesOToC + Math.Sqrt((directionTimesOToC * directionTimesOToC) - (originToPosition * originToPosition) - Math.Pow(radius, 2));
-
-            double t2 = -directionTimesOToC - Math.Sqrt((directionTimesOToC * directionTimesOToC) - (originToPosition * originToPosition) - Math.Pow(radius, 2));
-            if (t1 > 0 & t2 > 0 ) {
-                return Math.Min(t1, t2);
-            }
-            return 0;
-        }*/
     }
 }

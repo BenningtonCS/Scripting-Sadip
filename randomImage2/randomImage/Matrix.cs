@@ -47,9 +47,24 @@ namespace randomImage
         }
 
         
-        /*public static Matrix operator *(Matrix a, Matrix b) {
-            Vector x = new Vector(a.v1.x, a.v2.x, a.v3.x);
-            return new Matrix( x * b.v1, new Vector(a.v1.y, a.v2.y, a.v3.y) * b.v2, new Vector(a.v1.z, a.v2.z, a.v3.z) * b.v3);
-        }*/
+        public static Matrix operator *(Matrix a, Matrix b) {
+            Vector firstRowVectorOfFirstMatrix = new Vector(a.v1.x, a.v2.x, a.v3.x);
+            Vector secondRowVectorOfFirstMatrix = new Vector(a.v1.y, a.v2.y, a.v3.y);
+            Vector thirdRowVectorOfFirstMatrix = new Vector(a.v1.z, a.v2.z, a.v3.z);
+
+            Vector firstColumnVector = new Vector(firstRowVectorOfFirstMatrix * b.v1, firstRowVectorOfFirstMatrix * b.v2, firstRowVectorOfFirstMatrix * b.v3);
+            Vector secondColumnVector = new Vector(secondRowVectorOfFirstMatrix * b.v1, secondRowVectorOfFirstMatrix * b.v2, secondRowVectorOfFirstMatrix * b.v3);
+            Vector thirdColumnVector = new Vector(thirdRowVectorOfFirstMatrix * b.v1, thirdRowVectorOfFirstMatrix * b.v2, thirdRowVectorOfFirstMatrix * b.v3);
+
+            return new Matrix(firstColumnVector, secondColumnVector, thirdColumnVector);
+        }
+
+        public static Vector operator *(Matrix a, Vector b) {
+            Vector firstColumnVector = new Vector(a.v1.x, a.v2.x, a.v3.x);
+            Vector secondColumnVector = new Vector(a.v1.y, a.v2.y, a.v3.y);
+            Vector thirdColumnVector = new Vector(a.v1.z, a.v2.z, a.v3.z);
+
+            return new Vector(firstColumnVector * b, secondColumnVector * b, thirdColumnVector * b);
+        }
     }
 }

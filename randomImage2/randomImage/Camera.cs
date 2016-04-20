@@ -23,7 +23,7 @@ namespace randomImage
         private double focalLength;
         private bool DOFUsed;
         //public String typeOfSampling;
-        
+
 
 
         public Camera(Vector position, Vector lookAt) // for the perspective camera
@@ -38,7 +38,7 @@ namespace randomImage
 
             //to make the camera to move 
             //checking whether the x and y coordinates of position of camera to be zero than giving it's camera move vector to be new vector that is (1,0,0)
-           if (position.x == 0 && position.z == 0)
+            if (position.x == 0 && position.z == 0)
                 cameraMoveVector = new Vector(1, 0, 0);
 
             w = (lookAt - position).Normalize(); // calculating w which is the unit position vector from position to look at point of the camera
@@ -48,12 +48,12 @@ namespace randomImage
         }
 
         // constructor initializer list
-        public Camera(Vector position, Vector lookAt, int numberOfSamples) : this(position, lookAt){
+        public Camera(Vector position, Vector lookAt, int numberOfSamples) : this(position, lookAt) {
             this.numberOfSamples = numberOfSamples;
         }
 
         //constructor initializer list
-        public Camera(Vector position, Vector lookAt, double fov) :this(position, lookAt){
+        public Camera(Vector position, Vector lookAt, double fov) : this(position, lookAt) {
             this.fov = fov;
         }
 
@@ -79,7 +79,7 @@ namespace randomImage
             return (u * point.x + v * point.y + w * point.z); // converting into world coordinates
         }
 
-     
+
         public void Render(Scene scene, Bitmap bmp, Light[] lights)
         {
             //creating a array for storing different types of combinations for jittered sampling
@@ -88,7 +88,7 @@ namespace randomImage
             //if jittered is given then only it will push variables to the array
             if (numberOfJittered > 1) {
                 for (int l = 0; l < numberOfJittered; l++) {
-                    possibleCombinations[l] = (double)(2*l + 1)/(numberOfJittered * 2);
+                    possibleCombinations[l] = (double)(2 * l + 1) / (numberOfJittered * 2);
                 }
             }
 
@@ -111,12 +111,24 @@ namespace randomImage
                     //this is the loop for anti-aliasing(AA) that is number of samples
                     if (numberOfJittered > 1) numberOfSamples = (int)Math.Pow(numberOfJittered, 2);
 
+                    double dz = (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
+                    if (DOFUsed)
+                    {
+                        pixelSize = focalLength / dz;
+                    } else
+                    {
+                        pixelSize = 1 / dz;
+                    }
+
+                    Vector pointInThePixel = (new Vector((-width / 2), (height / 2), 0) + new Vector(0.5, -0.5, 0) + new Vector(j, -i, position.z)) * pixelSize; // changing the basis i.e. in terms of i and j of the image
+                    Double wOffset = 1;
+                    if (DOFUsed)
+                    {
+                        wOffset = focalLength;
+                    }
                     for (int k = 0; k < numberOfSamples; k++)
                     {
-                        Vector rayDirection;
-                        Vector focalPoint;
-      
-
+                        Ray ray = new Ray(position, new Vector());
                         //checking number of jittered is given or not through it's default value 
                         //that is if number of jittered is not given than calculating as usual number of sampling way 
                         //otherwise that is if number of jittered is given than calculating number of jitterd out of it and checking through midpoints of those number of samples of each pixel
@@ -130,35 +142,12 @@ namespace randomImage
                             ////
 
                             //if number of samplings is 1 then here the value of m will be 0.5 otherwise it will be m which is the random number from 0 to 1
-                            double dx = j - (width / 2) + (numberOfSamples == 1 ? 0.5 : m); // calculating dx
-                            double dy = ((height / 2) - i) + (numberOfSamples == 1 ? 0.5 : m); // calculating dy
-                            double dz = (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
-                            rayDirection = convertCameraToWorldCoordinates(new Vector(dx, dy, dz)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
+                            double dx = (j - (width / 2) + (numberOfSamples == 1 ? 0.5 : m)) * pixelSize; // calculating dx
+                            double dy = (((height / 2) - i) + (numberOfSamples == 1 ? 0.5 : m)) * pixelSize; // calculating dy
+                            //double dz = 1;// (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
+                            pointInThePixel = new Vector(dx, dy, wOffset);
+                            ray.direction = convertCameraToWorldCoordinates(pointInThePixel).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
 
-                            //checking whether the depth of field is given or not
-                            if (DOFUsed)
-                            {
-                                //finding the focal point or focus of the camera
-                                focalPoint = position + focalLength * rayDirection;
-                                
-                                //getting random value for aperture size that is the radius if the circle which will be in blur
-                                double randomRadius = Algebra.getRandomNumber(0,apertureSize);
-
-                                //similarly getting the random angle of the circle for getting the random point in the aperture size or the circle in focus
-                                double randomAngle = Algebra.getRandomNumber(0, 2 * Math.PI);
-
-                                //new x and y positions of camera are determined by random radius and random angle of circle having radius equal to  aperture size 
-                                double xPositionOfCamera = randomRadius * Math.Cos(Algebra.convertToRad(randomAngle));
-                                double yPositionOfCamera = randomRadius * Math.Sin(Algebra.convertToRad(randomAngle));
-
-                                //here assigning new x and y values for camera 
-                                position.x = xPositionOfCamera;
-                                position.y = yPositionOfCamera;
-
-                                //similarly finding new ray direction and converting to world coordinates and getting it's unit vector 
-                                Vector newRayDirection = (focalPoint - position).Normalize();
-                                rayDirection = convertCameraToWorldCoordinates(new Vector(newRayDirection.x, newRayDirection.y, newRayDirection.z)).Normalize();
-                            }
                         }
                         else
                         {
@@ -167,38 +156,20 @@ namespace randomImage
                             int kY = (k / numberOfJittered); // this is for finding the next index of the array for giving possible value pf mid points of jittered grid
 
                             //Debug.Assert(kX == 0.25);
-                            
+
                             double dx = j - (width / 2) + (numberOfSamples == 1 ? 0.5 : possibleCombinations[kX]); // calculating dx where possible combination is given by indexing the array
                             double dy = ((height / 2) - i) + (numberOfSamples == 1 ? 0.5 : possibleCombinations[kY]); // calculating dy
-                            double dz = (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
-                            rayDirection = convertCameraToWorldCoordinates(new Vector(dx, dy, dz)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
-
-
-                            if (DOFUsed)
-                            {
-                                //finding the focal point or focus of the camera
-                                focalPoint = position + focalLength * rayDirection;
-
-                                //getting random value for aperture size that is the radius if the circle which will be in blur
-                                double randomRadius = Algebra.getRandomNumber(0, apertureSize);
-
-                                //similarly getting the random angle of the circle for getting the random point in the aperture size or the circle in focus
-                                double randomAngle = Algebra.getRandomNumber(0, 2 * Math.PI);
-
-                                //new x and y positions of camera are determined by random radius and random angle of circle having radius equal to  aperture size 
-                                double xPositionOfCamera = randomRadius * Math.Cos(Algebra.convertToRad(randomAngle));
-                                double yPositionOfCamera = randomRadius * Math.Sin(Algebra.convertToRad(randomAngle));
-
-                                //here assigning new x and y values for camera 
-                                position.x = xPositionOfCamera;
-                                position.y = yPositionOfCamera;
-
-                                //similarly finding new ray direction and converting to world coordinates and getting it's unit vector 
-                                Vector newRayDirection = (focalPoint - position).Normalize();
-                                rayDirection = convertCameraToWorldCoordinates(new Vector(newRayDirection.x, newRayDirection.y, newRayDirection.z)).Normalize();
-                            }
+                            //double dz = 1;// (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
+                            ray.direction = convertCameraToWorldCoordinates(new Vector(dx, dy, 1)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
+                           
                         }
 
+
+                        if (DOFUsed)
+                        {
+                            ray = FindDOFRay(pointInThePixel);
+                         
+                        }
 
                         Shape closestShape = scene.shapes[0]; // rendering multiple objects so searching for the closest shape to render
 
@@ -206,21 +177,26 @@ namespace randomImage
 
                         foreach (Shape shape in scene.shapes)
                         {
-                            double t = shape.DoesIntersect(position, rayDirection);
+
+
+                            double t = shape.DoesIntersect(ray.origin, ray.direction);
                             if ((t < closestT) && (t >= 0))
                             {
                                 closestT = t;
                                 closestShape = shape;
                             }
                         }
-                        if (closestShape.DoesIntersect(position, rayDirection) >= 0) // checking whether the ray hits the sphere or not
+
+
+
+                        if (closestShape.DoesIntersect(ray.origin, ray.direction) >= 0) // checking whether the ray hits the sphere or not
                         {
                             SColor color = closestShape.material.color;
                             double ambient = closestShape.material.ambient;
 
                             SColor lightContribution = new SColor();
 
-                            Vector point = position + (rayDirection * closestT); // point of intersection
+                            Vector point = ray.origin + (ray.direction * closestT); // point of intersection
                             Vector normal = closestShape.NormalAtPoint(point);
 
                             // for multiple lighting
@@ -236,7 +212,7 @@ namespace randomImage
                                 {
                                     //checking whether each shape is in shadow or not
                                     // also checking whether the distance from the point of intersection and the direction of the ray is greater than the ray intersection distance
-                                    if (shape.DoesIntersect(point + (normal * 0.5), shadowRayDirection) >= 0 && Math.Abs((light.location - point).Magnitude()) > shape.DoesIntersect(position, rayDirection))
+                                    if (shape.DoesIntersect(point + (normal * 0.5), shadowRayDirection) >= 0 && Math.Abs((light.location - point).Magnitude()) > shape.DoesIntersect(position, ray.direction))
                                     {
                                         inShadow = true;
                                         break; // giving break point if it's in in shadow
@@ -274,11 +250,31 @@ namespace randomImage
                     //now giving that average color of all those samples
                     bmp.SetPixel(j, i, Color.FromArgb(colorSampling.GetAlphaColor(), colorSampling.GetRedColor(), colorSampling.GetGreenColor(), colorSampling.GetBlueColor()));
                 }
-            }   
-            
-        }
+            }
 
+        }
+    // method for finding the new ray origin and new ray direction according to the DOF
+    Ray FindDOFRay(Vector pointInThePixel)
+    {
+        //getting random value for aperture size that is the radius if the circle which will be in blur
+        double randomRadius = Algebra.getRandomNumber(0, apertureSize);
+
+        //similarly getting the random angle of the circle for getting the random point in the aperture size or the circle in focus
+        double randomAngle = Algebra.getRandomNumber(0, 2 * Math.PI);
+
+        //new x and y positions of camera are determined by random radius and random angle of circle having radius equal to  aperture size 
+        double xPositionOfCamera = randomRadius * Math.Cos(Algebra.convertToRad(randomAngle));
+        double yPositionOfCamera = randomRadius * Math.Sin(Algebra.convertToRad(randomAngle));
+
+        //here assigning new x and y values for camera 
+        Vector rayOrigin = new Vector(xPositionOfCamera, yPositionOfCamera, 0);
+
+        //similarly finding new ray direction and converting to world coordinates and getting it's unit vector 
+        Vector direction = pointInThePixel - rayOrigin;
+        Vector newRayDirection = convertCameraToWorldCoordinates(direction).Normalize();
+        return new Ray(rayOrigin + position, newRayDirection);
     }
+}
 }  
 
 

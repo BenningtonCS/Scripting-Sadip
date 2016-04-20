@@ -8,7 +8,7 @@ namespace randomImage
 {
     public class Vector
     {
-        public double x, y, z, w;
+        public double x, y, z;
         //private bool is4D;
          
         // setting a default vector
@@ -29,11 +29,12 @@ namespace randomImage
            // is4D = false;
         }
 
-        public Vector(double x, double y, double z, double w) : this(x, y, z)
+       /* public Vector(double x, double y, double z, double w) : this(x, y, z)
         {
             this.w = w;
            // is4D = true;
         }
+        */
 
         // operation overloading for addtion of any two vector using + sign
         public static Vector operator +(Vector a, Vector b)
