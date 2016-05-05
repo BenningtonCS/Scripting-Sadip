@@ -10,11 +10,11 @@ namespace randomImage
     {
         public Vector v1, v2, v3; //it is 3 by 3 matrix where it takes three column vectors 
 
-        // making default
+        // making default matrix as the identity matrix
         public Matrix() {
-            v1 = new Vector();
-            v2 = new Vector();
-            v3 = new Vector();
+            v1 = new Vector(1,0,0);
+            v2 = new Vector(0,1,0);
+            v3 = new Vector(0,0,1);
         }
 
         public Matrix(Vector v1, Vector v2, Vector v3) {
@@ -23,12 +23,6 @@ namespace randomImage
             this.v3 = v3;
         }
 
-        public Matrix IdentityMatrix() {
-             Vector a = new Vector(1,0,0);
-             Vector b = new Vector(0,1,0);
-             Vector c = new Vector(0,0,1);
-             return new Matrix(a, b, c);
-         }
 
         // operation overloading for addition of any two matrices using + sign
         public static Matrix operator +(Matrix a, Matrix b)
@@ -59,6 +53,7 @@ namespace randomImage
             return new Matrix(firstColumnVector, secondColumnVector, thirdColumnVector);
         }
 
+        //operator overloading for matrix times vector
         public static Vector operator *(Matrix a, Vector b) {
             Vector firstColumnVector = new Vector(a.v1.x, a.v2.x, a.v3.x);
             Vector secondColumnVector = new Vector(a.v1.y, a.v2.y, a.v3.y);
@@ -66,5 +61,6 @@ namespace randomImage
 
             return new Vector(firstColumnVector * b, secondColumnVector * b, thirdColumnVector * b);
         }
+
     }
 }

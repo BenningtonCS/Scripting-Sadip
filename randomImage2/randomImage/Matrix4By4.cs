@@ -10,10 +10,8 @@ namespace randomImage
     {
         Matrix m; // this is 3 by 3 matrix
         Vector v1; // this is another 3 by 3 4th vector 
-        Vector zeroVector = new Vector(); // this is another 3 by 3 vector which will always be (0,0,0)
-        double n = 1; // this is for the last 4 by 4 element of the transformation matrix which will always be 1
 
-        // making default
+        // making default 4 by 4 matrix as identity matrix
         public Matrix4By4()
         {
             Matrix m = new Matrix();
@@ -26,6 +24,22 @@ namespace randomImage
             this.v1 = v1;
         }
 
+        public static Matrix4By4 XRotation(double rotationAngleThroughXAxis)
+        {
+            return new Matrix4By4(new Matrix(new Vector(1, 0, 0), new Vector(0, Math.Cos(Algebra.convertToRad(rotationAngleThroughXAxis)), Math.Sin(Algebra.convertToRad(rotationAngleThroughXAxis))), new Vector(0, (-1) * Math.Sin(Algebra.convertToRad(rotationAngleThroughXAxis)), Math.Cos(Algebra.convertToRad(rotationAngleThroughXAxis)))), new Vector());
+        }
+
+
+        public static Matrix4By4 YRotation(double rotationAngleThroughYAxis) {
+            return new Matrix4By4(new Matrix(new Vector(Math.Cos(Algebra.convertToRad(rotationAngleThroughYAxis)), 0, (-1) * Math.Sin(Algebra.convertToRad(rotationAngleThroughYAxis))), new Vector(0, 1, 0), new Vector(Math.Sin(Algebra.convertToRad(rotationAngleThroughYAxis)),0,Math.Cos(Algebra.convertToRad(rotationAngleThroughYAxis)))), new Vector());
+        }
+
+
+        public static Matrix4By4 ZRotation(double rotationAngleThroughZAxis) {
+            return new Matrix4By4(new Matrix(new Vector(Math.Cos(Algebra.convertToRad(rotationAngleThroughZAxis)), Math.Sin(Algebra.convertToRad(rotationAngleThroughZAxis)),0), new Vector(Math.Sin(Algebra.convertToRad(rotationAngleThroughZAxis)),Math.Cos(Algebra.convertToRad(rotationAngleThroughZAxis)),0), new Vector()), new Vector());
+        }
+
+
         public static Matrix4By4 operator +(Matrix4By4 firstMatrix, Matrix4By4 secondMatrix) {
             return new Matrix4By4(firstMatrix.m + secondMatrix.m, firstMatrix.v1 + secondMatrix.v1);
         }
@@ -33,6 +47,8 @@ namespace randomImage
        public static Matrix4By4 operator *(Matrix4By4 firstMatrix, Matrix4By4 secondMatrix) {
             return new Matrix4By4(firstMatrix.m * secondMatrix.m, firstMatrix.m * secondMatrix.v1 + firstMatrix.v1);
         }
+
+
 
     }
 }

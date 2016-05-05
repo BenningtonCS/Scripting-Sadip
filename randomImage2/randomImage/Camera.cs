@@ -188,7 +188,6 @@ namespace randomImage
                         }
 
 
-
                         if (closestShape.DoesIntersect(ray.origin, ray.direction) >= 0) // checking whether the ray hits the sphere or not
                         {
                             SColor color = closestShape.material.color;

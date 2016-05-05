@@ -10,6 +10,9 @@ namespace randomImage
     {
         public Vector position;
         public Material material;
+        // Vector scale, translate, rotate;
+        Matrix4By4 transformMatrix, inverseTransformMatrix;
+
         //public SColor color;
 
         public Shape(Vector position, Material material)
@@ -19,6 +22,13 @@ namespace randomImage
             //this.color = color;  
         }
 
+        //making constructor initializer list
+        /*public Shape(Vector position, Material material, Vector translate, Vector scale, Vector rotate) : this(position, material) {
+            this.translate = translate;
+            this.scale = scale;
+            this.rotate = rotate;
+        }
+        */
 
         public virtual double DoesIntersect(Vector origin, Vector direction)
         {
@@ -30,8 +40,38 @@ namespace randomImage
             return new Vector(0, 0, 0);
         }
 
-        /* Matrix ConvertToTranformationMatrix(Vector scale) {
-             return new Matrix4By4(, scale);
-         }*/
+        public void AddTranslationToTranformationMatrix(Vector translate) {
+             transformMatrix = new Matrix4By4(new Matrix(), translate) * transformMatrix;
+            inverseTransformMatrix *= new Matrix4By4(new Matrix(), (-1) * translate); 
+         }
+
+        public void AddScaleToTransformationMatrix(Vector scale) {
+            transformMatrix = new Matrix4By4(new Matrix(new Vector(scale.x,0,0), new Vector(0,scale.y,0), new Vector(0,0,scale.z)), new Vector());
+            inverseTransformMatrix *= new Matrix4By4(new Matrix(new Vector((1/scale.x),0,0), new Vector(0,(1/scale.y),0), new Vector(0,0,(1/scale.z))), new Vector());
+        }
+
+        public void AddRotationThroughXAxisToTransformationMatrix(double rotationAngleThroughXAxis) {
+            transformMatrix = Matrix4By4.XRotation(rotationAngleThroughXAxis) * transformMatrix;
+            inverseTransformMatrix *= Matrix4By4.XRotation(-rotationAngleThroughXAxis);
+        }
+
+        public void AddRotationThroughYAxisToTransformationMatrix(double rotationAngleThroughYAxis) {
+            transformMatrix = Matrix4By4.XRotation(rotationAngleThroughYAxis) * transformMatrix;
+            inverseTransformMatrix *= Matrix4By4.YRotation(-rotationAngleThroughYAxis);
+        }
+
+        public void AddRotationThroughZAxisToTransformationMatrix(double rotationAngleThroughZAxis) {
+            transformMatrix = Matrix4By4.ZRotation(rotationAngleThroughZAxis) * transformMatrix;
+            inverseTransformMatrix *= Matrix4By4.ZRotation(-rotationAngleThroughZAxis);
+        }
+
+        public void AddRotationThroughAllAxisToTransformationMatrix(double rotationAngleThroughXAxis, double rotationAngleThroughYAxis, double rotaionAngleThroughZAxis) {
+            transformMatrix = Matrix4By4.ZRotation(rotaionAngleThroughZAxis) * Matrix4By4.YRotation(rotationAngleThroughYAxis) * Matrix4By4.XRotation(rotationAngleThroughXAxis) * transformMatrix;
+            inverseTransformMatrix *= Matrix4By4.XRotation(-rotationAngleThroughXAxis) * Matrix4By4.YRotation(-rotationAngleThroughYAxis) * Matrix4By4.ZRotation(-rotaionAngleThroughZAxis);
+        }
+
+
+
+       
     }
 }

@@ -47,8 +47,8 @@ namespace randomImage
 
 
             //making a triangle
-            Triangle triangle = new Triangle(new Vector(0,10,0), new Vector(10,-10,0), new Vector(-10,-10,0), new Material(new SColor(1,1,0,1), 0.25));
-
+            Triangle triangle = new Triangle(new Vector(-10,0,0), new Vector(10,0,0), new Vector(0,10,0), new Material(new SColor(1,0,0,1), 0.25));
+            //triangle.AddScaleToTransformationMatrix(new Vector(2,2,2));
             // making a light i.e. a point light
             Light light1 = new Light(new Vector(-20,30,2) , 0.75, new SColor(1,1,1,1));
 
@@ -62,10 +62,10 @@ namespace randomImage
             Camera camera = new Camera(new Vector(0,0,-100), new Vector(0,0,0));
             camera.numberOfSamples = 4;
             //camera.numberOfJittered = 4;
-            camera.useDOF(0.2, 5);
+            //camera.useDOF(0.2, 5);
      
             // array for multiple shapes
-            Shape[] shapes = {sphere1, sphere2, plane1, disk1};
+            Shape[] shapes = {triangle};
 
             // array for multiple lights
             Light[] lights = {light1, light2};

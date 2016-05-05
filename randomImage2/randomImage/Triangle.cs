@@ -25,7 +25,7 @@ namespace randomImage
             Matrix A1 = new Matrix(new Vector(position.x - secondPoint.x, position.y - secondPoint.y, position.z - secondPoint.z), new Vector(position.x - origin.x, position.y - origin.y, position.z - origin.z), new Vector(direction.x, direction.y, direction.z));
 
 
-            double beta = (A0.Determinant()) / (A1.Determinant());
+            double beta = (A0.Determinant()) / (A.Determinant());
 
             double gamma = (A1.Determinant()) / (A.Determinant());
 
