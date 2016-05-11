@@ -26,7 +26,12 @@ namespace randomImage
 
         public static Matrix4By4 XRotation(double rotationAngleThroughXAxis)
         {
-            return new Matrix4By4(new Matrix(new Vector(1, 0, 0), new Vector(0, Math.Cos(Algebra.convertToRad(rotationAngleThroughXAxis)), Math.Sin(Algebra.convertToRad(rotationAngleThroughXAxis))), new Vector(0, (-1) * Math.Sin(Algebra.convertToRad(rotationAngleThroughXAxis)), Math.Cos(Algebra.convertToRad(rotationAngleThroughXAxis)))), new Vector());
+            return new Matrix4By4(new Matrix(new Vector(1, 0, 0), 
+                new Vector(0, Math.Cos(Algebra.convertToRad(rotationAngleThroughXAxis)),
+                Math.Sin(Algebra.convertToRad(rotationAngleThroughXAxis))),
+                new Vector(0, (-1) * Math.Sin(Algebra.convertToRad(rotationAngleThroughXAxis)),
+                Math.Cos(Algebra.convertToRad(rotationAngleThroughXAxis)))),
+                new Vector());
         }
 
 

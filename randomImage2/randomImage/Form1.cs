@@ -25,11 +25,11 @@ namespace randomImage
             Vector sphereCenter = new Vector(0,0,0);
             Material material1 = new Material(new SColor(1,0,1,1), 0.5);
             Sphere sphere1 = new Sphere(5, material1, sphereCenter);
-            sphere1.AddScaleToTransformationMatrix(new Vector(2,1,1));
+            sphere1.AddScaleToTransformationMatrix(new Vector(1,2,1));
             //sphere1.AddTranslationToTranformationMatrix(new Vector(-30,10,0));
             //sphere1.AddRotationThroughAllAxisToTransformationMatrix(0,0,0);
             //sphere1.AddRotationThroughXAxisToTransformationMatrix(90);
-            //sphere1.AddRotationThroughZAxisToTransformationMatrix(90);
+            //sphere1.AddRotationThroughZAxisToTransformationMatrix(1);
           
 
             // making a sphere by assigning it it's parameters
@@ -66,12 +66,12 @@ namespace randomImage
             
             // setting our camera position and direction of the camera
             Camera camera = new Camera(new Vector(0,0,-100), new Vector(0,0,0));
-            camera.numberOfSamples = 4;
+            //camera.numberOfSamples = 4;
             //camera.numberOfJittered = 4;
             //camera.useDOF(0.2, 5);
      
             // array for multiple shapes
-            Shape[] shapes = {sphere1, triangle};
+            Shape[] shapes = {sphere1, plane1};
 
             // array for multiple lights
             Light[] lights = {light1, light2};

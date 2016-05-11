@@ -218,7 +218,10 @@ namespace randomImage
                                 {
                                     //checking whether each shape is in shadow or not
                                     // also checking whether the distance from the point of intersection and the direction of the ray is greater than the ray intersection distance
-                                    if (shape.DoesIntersect(point + (normal * 0.5), shadowRayDirection) >= 0 && Math.Abs((light.location - point).Magnitude()) > shape.DoesIntersect(position, ray.direction))
+
+                                    //transforming the ray origin along with the given tranformation matrices
+                                    Vector transformedShadowRayDirection = (shape.inverseTransformMatrix * shadowRayDirection).Normalize();
+                                    if (shape.DoesIntersect(point + (normal * 0.5), transformedShadowRayDirection) >= 0 && Math.Abs((light.location - point).Magnitude()) > shape.DoesIntersect(position, ray.direction))
                                     {
                                         inShadow = true;
                                         break; // giving break point if it's in in shadow
