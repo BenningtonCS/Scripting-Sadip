@@ -10,25 +10,15 @@ namespace randomImage
     {
         public Vector position;
         public Material material;
-        // Vector scale, translate, rotate;
-        Matrix4By4 transformMatrix, inverseTransformMatrix;
-
-        //public SColor color;
+        public Matrix4By4 transformMatrix = new Matrix4By4(new Matrix(), new Vector());
+        public Matrix4By4 inverseTransformMatrix = new Matrix4By4(new Matrix(), new Vector());
 
         public Shape(Vector position, Material material)
         {
             this.position = position;
-            this.material = material;
-            //this.color = color;  
+            this.material = material; 
         }
 
-        //making constructor initializer list
-        /*public Shape(Vector position, Material material, Vector translate, Vector scale, Vector rotate) : this(position, material) {
-            this.translate = translate;
-            this.scale = scale;
-            this.rotate = rotate;
-        }
-        */
 
         public virtual double DoesIntersect(Vector origin, Vector direction)
         {

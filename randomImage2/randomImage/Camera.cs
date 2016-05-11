@@ -163,7 +163,7 @@ namespace randomImage
                             ray.direction = convertCameraToWorldCoordinates(new Vector(dx, dy, 1)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
                            
                         }
-
+                        
 
                         if (DOFUsed)
                         {
@@ -175,10 +175,13 @@ namespace randomImage
 
                         double closestT = double.MaxValue; // shape which has closest T need to be rendered at first
 
+                        //transforming the ray origin along with the given tranformation matrices
+                        ray.origin = FindNewPoint(closestShape.inverseTransformMatrix, ray.origin);
+                        ray.direction = closestShape.inverseTransformMatrix * ray.direction;
+                        ray.direction = ray.direction.Normalize();
+
                         foreach (Shape shape in scene.shapes)
                         {
-
-
                             double t = shape.DoesIntersect(ray.origin, ray.direction);
                             if ((t < closestT) && (t >= 0))
                             {
@@ -196,6 +199,10 @@ namespace randomImage
                             SColor lightContribution = new SColor();
 
                             Vector point = ray.origin + (ray.direction * closestT); // point of intersection
+
+                            //transforming the point of intersection according to the transformation matrices
+                            point = FindNewPoint(closestShape.transformMatrix, point);
+
                             Vector normal = closestShape.NormalAtPoint(point);
 
                             // for multiple lighting
@@ -273,6 +280,13 @@ namespace randomImage
         Vector newRayDirection = convertCameraToWorldCoordinates(direction).Normalize();
         return new Ray(rayOrigin + position, newRayDirection);
     }
+        //creating the method for multiplying matrix 4by4 and point of intersection
+        Vector FindNewPoint(Matrix4By4 matrix, Vector point)
+        {
+            Vector vector1 = matrix * point;
+            return (vector1 + matrix.v1);
+            
+        }
 }
 }  
 

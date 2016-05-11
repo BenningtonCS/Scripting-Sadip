@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace randomImage
 {
-    class Matrix
+    public class Matrix
     {
         public Vector v1, v2, v3; //it is 3 by 3 matrix where it takes three column vectors 
 

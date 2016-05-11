@@ -22,7 +22,7 @@ namespace randomImage
             b = t;
         }
 
-        //
+        // to get the random number
         public static double getRandomNumber(double minimum, double maximum)
         {
             Random random = new Random();

@@ -24,7 +24,12 @@ namespace randomImage
             // making a sphere by assigning it it's parameters
             Vector sphereCenter = new Vector(0,0,0);
             Material material1 = new Material(new SColor(1,0,1,1), 0.5);
-            Sphere sphere1 = new Sphere(10, material1, sphereCenter);
+            Sphere sphere1 = new Sphere(5, material1, sphereCenter);
+            sphere1.AddScaleToTransformationMatrix(new Vector(2,1,1));
+            //sphere1.AddTranslationToTranformationMatrix(new Vector(-30,10,0));
+            //sphere1.AddRotationThroughAllAxisToTransformationMatrix(0,0,0);
+            //sphere1.AddRotationThroughXAxisToTransformationMatrix(90);
+            //sphere1.AddRotationThroughZAxisToTransformationMatrix(90);
           
 
             // making a sphere by assigning it it's parameters
@@ -49,6 +54,7 @@ namespace randomImage
             //making a triangle
             Triangle triangle = new Triangle(new Vector(-10,0,0), new Vector(10,0,0), new Vector(0,10,0), new Material(new SColor(1,0,0,1), 0.25));
             //triangle.AddScaleToTransformationMatrix(new Vector(2,2,2));
+            //triangle.AddRotationThroughYAxisToTransformationMatrix(180);
             // making a light i.e. a point light
             Light light1 = new Light(new Vector(-20,30,2) , 0.75, new SColor(1,1,1,1));
 
@@ -65,7 +71,7 @@ namespace randomImage
             //camera.useDOF(0.2, 5);
      
             // array for multiple shapes
-            Shape[] shapes = {triangle};
+            Shape[] shapes = {sphere1, triangle};
 
             // array for multiple lights
             Light[] lights = {light1, light2};

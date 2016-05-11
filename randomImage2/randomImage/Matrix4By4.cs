@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace randomImage
 {
-    class Matrix4By4
+    public class Matrix4By4
     {
-        Matrix m; // this is 3 by 3 matrix
-        Vector v1; // this is another 3 by 3 4th vector 
+        public Matrix m; // this is 3 by 3 matrix
+        public Vector v1; // this is another 3 by 3 4th vector 
 
         // making default 4 by 4 matrix as identity matrix
         public Matrix4By4()
@@ -48,7 +48,12 @@ namespace randomImage
             return new Matrix4By4(firstMatrix.m * secondMatrix.m, firstMatrix.m * secondMatrix.v1 + firstMatrix.v1);
         }
 
-
+        public static Vector operator *(Matrix4By4 firstMatrix, Vector vectorV) {
+            Vector r1 = new Vector(firstMatrix.m.v1.x, firstMatrix.m.v2.x, firstMatrix.m.v3.x);
+            Vector r2 = new Vector(firstMatrix.m.v1.y, firstMatrix.m.v2.y, firstMatrix.m.v3.y);
+            Vector r3 = new Vector(firstMatrix.m.v1.z, firstMatrix.m.v2.z, firstMatrix.m.v3.z);
+            return new Vector(r1*vectorV, r2*vectorV, r3*vectorV);
+        }
 
     }
 }
