@@ -25,8 +25,8 @@ namespace randomImage
             Vector sphereCenter = new Vector(5,10,-20);
             Material material1 = new Material(new SColor(1,0,0,1), 0.08);
             Sphere sphere1 = new Sphere(5, material1, sphereCenter);
-            //sphere1.AddScaleToTransformationMatrix(new Vector(2.5,1,1));
-            //sphere1.AddTranslationToTranformationMatrix(new Vector(-20,0,0));
+            sphere1.AddScaleToTransformationMatrix(new Vector(2.5,1,1));
+            sphere1.AddTranslationToTranformationMatrix(new Vector(-20,0,0));
             //sphere1.AddRotationThroughAllAxisToTransformationMatrix(0,0,0);
             //sphere1.AddRotationThroughXAxisToTransformationMatrix(90);
             //sphere1.AddRotationThroughZAxisToTransformationMatrix(45);
@@ -64,7 +64,8 @@ namespace randomImage
             Box box1 = new Box(new Vector(5,5,5), new Vector(15,15,15), new Material(new SColor(1,1,0,1)));
 
             // making a cylinder 
-            Cylinder cylinder = new Cylinder(new Vector(0,0,0), new Vector(0,10,0), 2, new Material(new SColor(1,0,0,1)));
+            Cylinder cylinder = new Cylinder(new Vector(0,0,0), new Vector(0,1,0), 1, new Material(new SColor(1,0,0,1)));
+            cylinder.AddScaleToTransformationMatrix(new Vector(10,10,10));
             
             // setting our camera position and direction of the camera
             Camera camera = new Camera(new Vector(0,20,-100), new Vector(0,0,0));
@@ -74,7 +75,7 @@ namespace randomImage
             //camera.useDOF(20, 10);
      
             // array for multiple shapes
-            Shape[] shapes = {cylinder};
+            Shape[] shapes = {sphere1,plane1};
 
             // array for multiple lights
             Light[] lights = {light1};

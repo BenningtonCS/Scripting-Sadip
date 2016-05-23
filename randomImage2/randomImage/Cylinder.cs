@@ -91,12 +91,8 @@ namespace randomImage
 
         public override Vector NormalAtPoint(Vector point)
         {
-            /* Vector cylinderAxis = (position - secondCenter).Normalize();
-             Vector V = point - position;
-             Vector Vperp = V - (V * cylinderAxis.Normalize())*cylinderAxis.Normalize();
-             return Vperp.Normalize();*/
-
-            return new Vector(0,0,-1);
+            point.y = 0;
+            return point.Normalize();
         }
     }
 }
