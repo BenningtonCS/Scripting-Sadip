@@ -22,7 +22,6 @@ namespace randomImage
         private double apertureSize;
         private double focalLength;
         private bool DOFUsed;
-        //public String typeOfSampling;
 
 
 
@@ -80,7 +79,7 @@ namespace randomImage
         }
 
 
-        public void Render(Scene scene, Bitmap bmp, Light[] lights)
+        public void Render(Scene scene, Bitmap bmp)
         {
             //creating a array for storing different types of combinations for jittered sampling
             double[] possibleCombinations = new double[numberOfJittered];
@@ -101,7 +100,7 @@ namespace randomImage
                     Random randomNumber = new Random();
 
                     // creating one empty color space for averaging the color for that pixel in multi sampling
-                    SColor samplingColor = new SColor(0, 0, 0, 0);
+                    SColor samplingColor = new SColor();
 
                     //giving background color as black at first
                     bmp.SetPixel(j, i, Color.FromArgb(255, 0, 0, 0));
@@ -161,107 +160,30 @@ namespace randomImage
                             double dy = ((height / 2) - i) + (numberOfSamples == 1 ? 0.5 : possibleCombinations[kY]); // calculating dy
                             //double dz = 1;// (height / 2) / (Math.Tan(Algebra.convertToRad(fov * 0.5))); // calculating dz
                             ray.direction = convertCameraToWorldCoordinates(new Vector(dx, dy, 1)).Normalize(); // so vector (dx, dy, dz) will be the direction of the ray which is normalized
-                           
+
                         }
-                        
+
 
                         if (DOFUsed)
                         {
                             ray = FindDOFRay(pointInThePixel);
-                         
+
                         }
+                        
+                          // adding all the color of the samples that is given for multi sampling
 
-                        Shape closestShape = scene.shapes[0]; // rendering multiple objects so searching for the closest shape to render
-
-                        double closestT = double.MaxValue; // shape which has closest T need to be rendered at first
-
-                        //transforming the ray origin along with the given tranformation matrices
-                        ray.origin = FindNewPoint(closestShape.inverseTransformMatrix, ray.origin);
-                        ray.direction = closestShape.inverseTransformMatrix * ray.direction;
-                        ray.direction = ray.direction.Normalize();
-
-                        foreach (Shape shape in scene.shapes)
-                        {
-                            double t = shape.DoesIntersect(ray.origin, ray.direction);
-                            if ((t < closestT) && (t >= 0))
-                            {
-                                closestT = t;
-                                closestShape = shape;
-                            }
-                        }
-
-
-                        if (closestShape.DoesIntersect(ray.origin, ray.direction) >= 0) // checking whether the ray hits the sphere or not
-                        {
-                            SColor color = closestShape.material.color;
-                            double ambient = closestShape.material.ambient;
-
-                            SColor lightContribution = new SColor();
-
-                            Vector point = ray.origin + (ray.direction * closestT); // point of intersection
-
-                            //transforming the point of intersection according to the transformation matrices
-                            point = FindNewPoint(closestShape.transformMatrix, point);
-
-                            Vector normal = closestShape.NormalAtPoint(point);
-
-                            // for multiple lighting
-                            foreach (Light light in lights)
-                            {
-                                // for also checking shadows
-                                Vector shadowRayDirection = (light.location - point).Normalize(); // calculating the direction of the ray of the shadow
-
-                                // at first assigning inShadow variable boolean value false so that we can check whether any shape is in shadow or not
-                                bool inShadow = false;
-
-                                foreach (Shape shape in scene.shapes)
-                                {
-                                    //checking whether each shape is in shadow or not
-                                    // also checking whether the distance from the point of intersection and the direction of the ray is greater than the ray intersection distance
-
-                                    //transforming the ray origin along with the given tranformation matrices
-                                    Vector transformedShadowRayDirection = (shape.inverseTransformMatrix * shadowRayDirection).Normalize();
-                                    if (shape.DoesIntersect(point + (normal * 0.5), transformedShadowRayDirection) >= 0 && Math.Abs((light.location - point).Magnitude()) > shape.DoesIntersect(position, ray.direction))
-                                    {
-                                        inShadow = true;
-                                        break; // giving break point if it's in in shadow
-                                    }
-                                }
-                                if (inShadow)
-                                {
-                                    continue; // if it's in shadow than continuing that is casting a shadow
-                                }
-
-                                Vector lightToPoint = point - light.location; // position vector from light to point of intersection
-                                Vector lightDriection = lightToPoint.Normalize(); // and then normalizing it to get the direction of that vector
-                                double cosineAngle = -(lightDriection * normal); // finding the scalar value which gives the light intensity
-
-                                if (cosineAngle >= 0)
-                                {
-                                    lightContribution = lightContribution + (light.lightColor * color * cosineAngle * light.Intensity);
-                                }
-                            }
-
-                            // calculating diffuse reflectance 
-                            double diffuseReflectance = 1 - ambient;
-
-                            //calculating color of the shape
-                            SColor shapeColor = lightContribution * diffuseReflectance + (color * ambient);
-
-                            // adding all the color of the samples that is given for multi sampling
-                            samplingColor += shapeColor;
-                        }
-                    }
-
-                    //taking the average of the color of those all samples
-                    SColor colorSampling = samplingColor / numberOfSamples;
-
-                    //now giving that average color of all those samples
-                    bmp.SetPixel(j, i, Color.FromArgb(colorSampling.GetAlphaColor(), colorSampling.GetRedColor(), colorSampling.GetGreenColor(), colorSampling.GetBlueColor()));
+                    samplingColor += TraceRay(ray, scene);
                 }
-            }
 
+                //taking the average of the color of those all samples
+                SColor colorSampling = samplingColor / numberOfSamples;
+
+                //now giving that average color of all those samples
+                bmp.SetPixel(j, i, Color.FromArgb(colorSampling.GetAlphaColor(), colorSampling.GetRedColor(), colorSampling.GetGreenColor(), colorSampling.GetBlueColor()));
+            }
         }
+
+    }
     // method for finding the new ray origin and new ray direction according to the DOF
     Ray FindDOFRay(Vector pointInThePixel)
     {
@@ -283,15 +205,105 @@ namespace randomImage
         Vector newRayDirection = convertCameraToWorldCoordinates(direction).Normalize();
         return new Ray(rayOrigin + position, newRayDirection);
     }
-        //creating the method for multiplying matrix 4by4 and point of intersection
-        Vector FindNewPoint(Matrix4By4 matrix, Vector point)
+    //creating the method for multiplying matrix 4by4 and point of intersection
+    Vector FindNewPoint(Matrix4By4 matrix, Vector point)
+    {
+        Vector vector1 = matrix * point;
+        return (vector1 + matrix.v1);
+
+    }
+
+        SColor TraceRay(Ray ray, Scene scene)
         {
-            Vector vector1 = matrix * point;
-            return (vector1 + matrix.v1);
-            
+            SColor shapeColor = new SColor();
+            Vector newOrigin = new Vector();
+            Vector newDirection = new Vector();
+            Shape closestShape = scene.shapes[0]; // rendering multiple objects so searching for the closest shape to render
+
+            double closestT = double.MaxValue; // shape which has closest T need to be rendered at first
+
+           
+
+            foreach (Shape shape in scene.shapes)
+            {
+                //transforming the ray origin along with the given tranformation matrices
+
+                newOrigin = FindNewPoint(shape.inverseTransformMatrix, ray.origin);
+                newDirection = (shape.inverseTransformMatrix * ray.direction).Normalize();
+
+                double t = shape.DoesIntersect(newOrigin, newDirection);
+                if ((t < closestT) && (t >= 0))
+                {
+                    closestT = t;
+                    closestShape = shape;
+                }
+            }
+
+
+            if (closestShape.DoesIntersect(newOrigin, newDirection) >= 0) // checking whether the ray hits the sphere or not
+            {
+                SColor color = closestShape.material.color;
+                double ambient = closestShape.material.ambient;
+
+                SColor lightContribution = new SColor();
+
+                Vector point = newOrigin + (newDirection * closestT); // point of intersection
+
+                //transforming the point of intersection according to the transformation matrices
+                point = FindNewPoint(closestShape.transformMatrix, point);
+
+                Vector normal = closestShape.NormalAtPoint(point);
+
+                // for multiple lighting
+                foreach (Light light in scene.lights)
+                {
+                    // for also checking shadows
+                    Vector shadowRayDirection = (light.location - point).Normalize(); // calculating the direction of the ray of the shadow
+
+                    // at first assigning inShadow variable boolean value false so that we can check whether any shape is in shadow or not
+                    bool inShadow = false;
+
+                    foreach (Shape shape in scene.shapes)
+                    {
+                        //checking whether each shape is in shadow or not
+                        // also checking whether the distance from the point of intersection and the direction of the ray is greater than the ray intersection distance
+
+                        //transforming the ray origin along with the given tranformation matrices
+                        Vector transformedShadowRayDirection = (shape.inverseTransformMatrix * shadowRayDirection).Normalize();
+                        if (shape.DoesIntersect(point + (normal * 0.5), transformedShadowRayDirection) >= 0 && Math.Abs((light.location - point).Magnitude()) > shape.DoesIntersect(position, newDirection))
+                        {
+                            inShadow = true;
+                            break; // giving break point if it's in in shadow
+                        }
+                    }
+                    if (inShadow)
+                    {
+                        continue; // if it's in shadow than continuing that is casting a shadow
+                    }
+
+                    Vector lightToPoint = point - light.location; // position vector from light to point of intersection
+                    Vector lightDriection = lightToPoint.Normalize(); // and then normalizing it to get the direction of that vector
+                    double cosineAngle = -(lightDriection * normal); // finding the scalar value which gives the light intensity
+
+                    if (cosineAngle >= 0)
+                    {
+                        lightContribution = lightContribution + (light.lightColor * color * cosineAngle * light.Intensity);
+                    }
+                }
+
+                // calculating diffuse reflectance 
+                double diffuseReflectance = 1 - ambient;
+
+                //calculating color of the shape
+                shapeColor = lightContribution * diffuseReflectance + (color * ambient);
+
+              
+            }
+            return shapeColor;
+
         }
 }
-}  
+}
 
 
 

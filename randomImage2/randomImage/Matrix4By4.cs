@@ -36,12 +36,26 @@ namespace randomImage
 
 
         public static Matrix4By4 YRotation(double rotationAngleThroughYAxis) {
-            return new Matrix4By4(new Matrix(new Vector(Math.Cos(Algebra.convertToRad(rotationAngleThroughYAxis)), 0, (-1) * Math.Sin(Algebra.convertToRad(rotationAngleThroughYAxis))), new Vector(0, 1, 0), new Vector(Math.Sin(Algebra.convertToRad(rotationAngleThroughYAxis)),0,Math.Cos(Algebra.convertToRad(rotationAngleThroughYAxis)))), new Vector());
+            Matrix4By4 rm =  new Matrix4By4(new Matrix(new Vector(Math.Cos(Algebra.convertToRad(rotationAngleThroughYAxis)),
+                                                            0, 
+                                                            (-1) * Math.Sin(Algebra.convertToRad(rotationAngleThroughYAxis))), 
+                                                            new Vector(0, 1, 0), 
+                                                            new Vector(Math.Sin(Algebra.convertToRad(rotationAngleThroughYAxis)),
+                                                            0,
+                                                            Math.Cos(Algebra.convertToRad(rotationAngleThroughYAxis)))),
+                                                            new Vector());
+            return rm;
         }
 
 
         public static Matrix4By4 ZRotation(double rotationAngleThroughZAxis) {
-            return new Matrix4By4(new Matrix(new Vector(Math.Cos(Algebra.convertToRad(rotationAngleThroughZAxis)), Math.Sin(Algebra.convertToRad(rotationAngleThroughZAxis)),0), new Vector(Math.Sin(Algebra.convertToRad(rotationAngleThroughZAxis)),Math.Cos(Algebra.convertToRad(rotationAngleThroughZAxis)),0), new Vector()), new Vector());
+            Matrix4By4 rm = 
+                new Matrix4By4(new Matrix(
+                    new Vector(Math.Cos(Algebra.convertToRad(rotationAngleThroughZAxis)), Math.Sin(Algebra.convertToRad(rotationAngleThroughZAxis)),0), 
+                    new Vector((-1)*Math.Sin(Algebra.convertToRad(rotationAngleThroughZAxis)),Math.Cos(Algebra.convertToRad(rotationAngleThroughZAxis)),0), 
+                    new Vector(0,0,1)), 
+                new Vector());
+            return rm;
         }
 
 

@@ -49,6 +49,7 @@
     <Compile Include="Algebra.cs" />
     <Compile Include="Box.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="Cylinder.cs" />
     <Compile Include="Disk.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

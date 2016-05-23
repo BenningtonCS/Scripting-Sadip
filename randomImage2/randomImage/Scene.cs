@@ -8,18 +8,18 @@ namespace randomImage
 {
     public class Scene
     {
-        public Shape shape;
 
         public Shape[] shapes;
+        public Light[] lights;
 
-        public Scene(Shape shape) {
-            this.shape = shape;
-        }
 
-        public Scene(Shape[] shapes)
+        public Scene(Shape[] shapes, Light[] lights)
         {
             this.shapes = shapes;
+            this.lights = lights;
         }
+
+
 
     }
 }

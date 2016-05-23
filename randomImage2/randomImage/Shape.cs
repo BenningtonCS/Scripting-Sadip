@@ -16,7 +16,8 @@ namespace randomImage
         public Shape(Vector position, Material material)
         {
             this.position = position;
-            this.material = material; 
+            this.material = material;
+ 
         }
 
 
@@ -29,6 +30,13 @@ namespace randomImage
         {
             return new Vector(0, 0, 0);
         }
+
+        /*
+        // to find the reflected ray after reflection
+        public virtual Vector ReflectedRay(Vector direction, Vector normal) {
+            Vector reflectionRay = direction - 2 * (normal * direction) * normal;
+            return reflectionRay;
+        }*/
 
         public void AddTranslationToTranformationMatrix(Vector translate) {
              transformMatrix = new Matrix4By4(new Matrix(), translate) * transformMatrix;

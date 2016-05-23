@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace randomImage
 {
-    class Light
+    public class Light
     {
         public Vector location;
         public SColor lightColor;
