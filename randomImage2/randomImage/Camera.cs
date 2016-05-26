@@ -292,7 +292,7 @@ namespace randomImage
 
                     // for specular highlight
                     Vector cameraToIntersectionPoint = (position - point).Normalize();
-                    Vector reflectedRayDirection = closestShape.material.ReflectedRay(ray.origin, ray.direction, closestShape).direction;
+                    Vector reflectedRayDirection = (closestShape.material.ReflectedRay(ray.origin, ray.direction, closestShape).direction).Normalize();
                     double specularFactor = Math.Pow((cameraToIntersectionPoint * reflectedRayDirection), closestShape.material.smoothness);
 
                     if (cosineAngle < 0)
