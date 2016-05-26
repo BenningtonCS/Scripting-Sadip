@@ -22,11 +22,11 @@ namespace randomImage
         private void Form1_Load(object sender, EventArgs e)
         {
             // making a sphere by assigning it it's parameters
-            Vector sphereCenter = new Vector(5,10,-20);
-            Material material1 = new Material(new SColor(1,0,0,1), 0.08);
+            Vector sphereCenter = new Vector(0,10,0);
+            Material material1 = new Material(new SColor(1,0,0,1));
             Sphere sphere1 = new Sphere(5, material1, sphereCenter);
-            sphere1.AddScaleToTransformationMatrix(new Vector(2.5,1,1));
-            sphere1.AddTranslationToTranformationMatrix(new Vector(-20,0,0));
+            sphere1.AddScaleToTransformationMatrix(new Vector(2,1,1));
+            //sphere1.AddTranslationToTranformationMatrix(new Vector(-10,0,0));
             //sphere1.AddRotationThroughAllAxisToTransformationMatrix(0,0,0);
             //sphere1.AddRotationThroughXAxisToTransformationMatrix(90);
             //sphere1.AddRotationThroughZAxisToTransformationMatrix(45);
@@ -34,15 +34,15 @@ namespace randomImage
 
             // making a sphere by assigning it it's parameters
             Vector sphereCenter1 = new Vector(30, 0, -10);
-            Sphere sphere2 = new Sphere(4, new Material(new SColor(1,1,0,1), 0.25), sphereCenter1);
+            Sphere sphere2 = new Sphere(4, new Material(new SColor(1,1,0,1)), sphereCenter1);
 
             //making a sphere by assigning it it's parameters
             Sphere sphere3 = new Sphere(1, new Material(new SColor(1,0,0,1)), new Vector(5,40,-60));
 
             // making a plane by assigning it it's parameters
             Vector planeNormal = new Vector(0,1,0); // this will give a plane which direction is towards the direction of camera.
-            Vector planePoint = new Vector(0,-2,0);
-            Plane  plane1 = new Plane(planeNormal, planePoint, new Material(new SColor(1,1,1,1), 0.25));
+            Vector planePoint = new Vector(0,-20,0);
+            Plane  plane1 = new Plane(planeNormal, planePoint, new Material(new SColor(1,1,1,1)));
 
             // making a disk by assigning it it's parameters
             Vector diskNormal = new Vector(0,1,0); // plane will be vertical  
@@ -65,20 +65,20 @@ namespace randomImage
 
             // making a cylinder 
             Cylinder cylinder = new Cylinder(new Vector(0,0,0), new Vector(0,1,0), 1, new Material(new SColor(1,0,0,1)));
-            cylinder.AddScaleToTransformationMatrix(new Vector(10,10,10));
+            //cylinder.AddScaleToTransformationMatrix(new Vector(10,10,10));
             
             // setting our camera position and direction of the camera
-            Camera camera = new Camera(new Vector(0,20,-100), new Vector(0,0,0));
-            camera.fov = 36;
+            Camera camera = new Camera(new Vector(0,0,-100), new Vector(0,0,0));
+            //camera.fov = 36;
             //camera.numberOfSamples = 4;
             //camera.numberOfJittered = 4;
             //camera.useDOF(20, 10);
      
             // array for multiple shapes
-            Shape[] shapes = {sphere1,plane1};
+            Shape[] shapes = {sphere1,plane1,sphere2};
 
             // array for multiple lights
-            Light[] lights = {light1};
+            Light[] lights = {light2,light1};
 
             
             Scene scene = new Scene(shapes, lights);

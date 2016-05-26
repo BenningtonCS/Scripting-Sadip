@@ -89,8 +89,11 @@ namespace randomImage
             return t;
         }
 
+        // for finding the normal of the cylinder
         public override Vector NormalAtPoint(Vector point)
         {
+            // here making the y-component zero and normalizing it 
+            // that is fixing the normal but we have to transfer the or scale to make the cylinder that we want to implement or use
             point.y = 0;
             return point.Normalize();
         }

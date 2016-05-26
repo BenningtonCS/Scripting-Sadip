@@ -46,20 +46,20 @@ namespace randomImage
             Vector secondRowVectorOfFirstMatrix = new Vector(a.v1.y, a.v2.y, a.v3.y);
             Vector thirdRowVectorOfFirstMatrix = new Vector(a.v1.z, a.v2.z, a.v3.z);
 
-            Vector firstColumnVector = new Vector(firstRowVectorOfFirstMatrix * b.v1, firstRowVectorOfFirstMatrix * b.v2, firstRowVectorOfFirstMatrix * b.v3);
-            Vector secondColumnVector = new Vector(secondRowVectorOfFirstMatrix * b.v1, secondRowVectorOfFirstMatrix * b.v2, secondRowVectorOfFirstMatrix * b.v3);
-            Vector thirdColumnVector = new Vector(thirdRowVectorOfFirstMatrix * b.v1, thirdRowVectorOfFirstMatrix * b.v2, thirdRowVectorOfFirstMatrix * b.v3);
+            Vector firstColumnVector = new Vector(firstRowVectorOfFirstMatrix * b.v1, secondRowVectorOfFirstMatrix * b.v1, thirdRowVectorOfFirstMatrix * b.v1);
+            Vector secondColumnVector = new Vector(firstRowVectorOfFirstMatrix * b.v2, secondRowVectorOfFirstMatrix * b.v2, thirdRowVectorOfFirstMatrix * b.v2);
+            Vector thirdColumnVector = new Vector(firstRowVectorOfFirstMatrix * b.v3, secondRowVectorOfFirstMatrix * b.v3, thirdRowVectorOfFirstMatrix * b.v3);
 
             return new Matrix(firstColumnVector, secondColumnVector, thirdColumnVector);
         }
 
         //operator overloading for matrix times vector
         public static Vector operator *(Matrix a, Vector b) {
-            Vector firstColumnVector = new Vector(a.v1.x, a.v2.x, a.v3.x);
-            Vector secondColumnVector = new Vector(a.v1.y, a.v2.y, a.v3.y);
-            Vector thirdColumnVector = new Vector(a.v1.z, a.v2.z, a.v3.z);
+            Vector firstRowVector = new Vector(a.v1.x, a.v2.x, a.v3.x);
+            Vector secondRowVector = new Vector(a.v1.y, a.v2.y, a.v3.y);
+            Vector thirdRowVector = new Vector(a.v1.z, a.v2.z, a.v3.z);
 
-            return new Vector(firstColumnVector * b, secondColumnVector * b, thirdColumnVector * b);
+            return new Vector(firstRowVector * b, secondRowVector * b, thirdRowVector * b);
         }
 
     }

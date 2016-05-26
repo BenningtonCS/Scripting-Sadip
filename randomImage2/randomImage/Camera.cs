@@ -216,8 +216,6 @@ namespace randomImage
         SColor TraceRay(Ray ray, Scene scene)
         {
             SColor shapeColor = new SColor();
-            Vector newOrigin = new Vector();
-            Vector newDirection = new Vector();
             Shape closestShape = scene.shapes[0]; // rendering multiple objects so searching for the closest shape to render
 
             double closestT = double.MaxValue; // shape which has closest T need to be rendered at first
@@ -228,8 +226,8 @@ namespace randomImage
             {
                 //transforming the ray origin along with the given tranformation matrices
 
-                newOrigin = FindNewPoint(shape.inverseTransformMatrix, ray.origin);
-                newDirection = (shape.inverseTransformMatrix * ray.direction).Normalize();
+                Vector newOrigin = FindNewPoint(shape.inverseTransformMatrix, ray.origin);
+                Vector newDirection = (shape.inverseTransformMatrix * ray.direction).Normalize();
 
                 double t = shape.DoesIntersect(newOrigin, newDirection);
                 if ((t < closestT) && (t >= 0))
@@ -239,20 +237,27 @@ namespace randomImage
                 }
             }
 
+            Vector closeOrigin = FindNewPoint(closestShape.inverseTransformMatrix, ray.origin);
+            Vector closeDirection = (closestShape.inverseTransformMatrix * ray.direction).Normalize();
 
-            if (closestShape.DoesIntersect(newOrigin, newDirection) >= 0) // checking whether the ray hits the sphere or not
+
+            if (closestShape.DoesIntersect(closeOrigin, closeDirection) >= 0) // checking whether the ray hits the sphere or not
             {
                 SColor color = closestShape.material.color;
                 double ambient = closestShape.material.ambient;
+                double specularCoefficient = closestShape.material.specularCoefficient;
 
                 SColor lightContribution = new SColor();
 
-                Vector point = newOrigin + (newDirection * closestT); // point of intersection
+                Vector point = closeOrigin + (closeDirection * closestT); // point of intersection
 
                 //transforming the point of intersection according to the transformation matrices
                 point = FindNewPoint(closestShape.transformMatrix, point);
 
                 Vector normal = closestShape.NormalAtPoint(point);
+
+                // also changing the normal
+                normal = Matrix4By4.Transpose(closestShape.inverseTransformMatrix) * normal;
 
                 // for multiple lighting
                 foreach (Light light in scene.lights)
@@ -270,7 +275,7 @@ namespace randomImage
 
                         //transforming the ray origin along with the given tranformation matrices
                         Vector transformedShadowRayDirection = (shape.inverseTransformMatrix * shadowRayDirection).Normalize();
-                        if (shape.DoesIntersect(point + (normal * 0.5), transformedShadowRayDirection) >= 0 && Math.Abs((light.location - point).Magnitude()) > shape.DoesIntersect(position, newDirection))
+                        if (shape.DoesIntersect(point + (normal * 0.5), transformedShadowRayDirection) >= 0 && Math.Abs((light.location - point).Magnitude()) > shape.DoesIntersect(position, closeDirection))
                         {
                             inShadow = true;
                             break; // giving break point if it's in in shadow
@@ -285,17 +290,23 @@ namespace randomImage
                     Vector lightDriection = lightToPoint.Normalize(); // and then normalizing it to get the direction of that vector
                     double cosineAngle = -(lightDriection * normal); // finding the scalar value which gives the light intensity
 
-                    if (cosineAngle >= 0)
+                    // for specular highlight
+                    Vector cameraToIntersectionPoint = (position - point).Normalize();
+                    Vector reflectedRayDirection = closestShape.material.ReflectedRay(ray.origin, ray.direction, closestShape).direction;
+                    double specularFactor = Math.Pow((cameraToIntersectionPoint * reflectedRayDirection), closestShape.material.smoothness);
+
+                    if (cosineAngle < 0)
+                        cosineAngle = 0;
+                    if (specularFactor < 0)
+                        specularFactor = 0;
+                    if (cosineAngle >= 0 || specularFactor >= 0)
                     {
-                        lightContribution = lightContribution + (light.lightColor * color * cosineAngle * light.Intensity);
+                        lightContribution = lightContribution + (light.lightColor * color * (cosineAngle*closestShape.material.diffuseCoefficient + specularFactor * closestShape.material.specularCoefficient) * light.Intensity);
                     }
                 }
 
-                // calculating diffuse reflectance 
-                double diffuseReflectance = 1 - ambient;
-
                 //calculating color of the shape
-                shapeColor = lightContribution * diffuseReflectance + (color * ambient);
+                shapeColor = lightContribution + (color * ambient);
 
               
             }

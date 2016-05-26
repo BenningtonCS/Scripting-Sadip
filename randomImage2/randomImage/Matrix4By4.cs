@@ -64,7 +64,7 @@ namespace randomImage
         }
 
        public static Matrix4By4 operator *(Matrix4By4 firstMatrix, Matrix4By4 secondMatrix) {
-            return new Matrix4By4(firstMatrix.m * secondMatrix.m, firstMatrix.m * secondMatrix.v1 + firstMatrix.v1);
+            return new Matrix4By4(firstMatrix.m * secondMatrix.m, firstMatrix.m*secondMatrix.v1 + firstMatrix.v1);
         }
 
         public static Vector operator *(Matrix4By4 firstMatrix, Vector vectorV) {
@@ -72,6 +72,13 @@ namespace randomImage
             Vector r2 = new Vector(firstMatrix.m.v1.y, firstMatrix.m.v2.y, firstMatrix.m.v3.y);
             Vector r3 = new Vector(firstMatrix.m.v1.z, firstMatrix.m.v2.z, firstMatrix.m.v3.z);
             return new Vector(r1*vectorV, r2*vectorV, r3*vectorV);
+        }
+
+        public static Matrix4By4 Transpose(Matrix4By4 matrix) {
+            Vector firstRow = new Vector(matrix.m.v1.x, matrix.m.v2.x, matrix.m.v3.x);
+            Vector secondRow = new Vector(matrix.m.v1.y, matrix.m.v2.y,matrix.m.v3.y);
+            Vector thirdRow = new Vector(matrix.m.v1.z, matrix.m.v2.z, matrix.m.v3.z);
+            return new Matrix4By4(new Matrix(firstRow,secondRow,thirdRow),new Vector(0,0,0));
         }
 
     }

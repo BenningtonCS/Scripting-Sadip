@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace randomImage
 {
-    class Ray
+    public class Ray
     {
         public Vector origin;
         public Vector direction;
