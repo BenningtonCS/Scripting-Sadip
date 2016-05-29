@@ -25,7 +25,7 @@ namespace randomImage
             Vector sphereCenter = new Vector(0,10,0);
             Material material1 = new Material(new SColor(1,0,0,1));
             Sphere sphere1 = new Sphere(5, material1, sphereCenter);
-            sphere1.AddScaleToTransformationMatrix(new Vector(2,1,1));
+            sphere1.AddScaleToTransformationMatrix(new Vector(1,1,1));
             //sphere1.AddTranslationToTranformationMatrix(new Vector(-10,0,0));
             //sphere1.AddRotationThroughAllAxisToTransformationMatrix(0,0,0);
             //sphere1.AddRotationThroughXAxisToTransformationMatrix(90);
@@ -41,7 +41,7 @@ namespace randomImage
 
             // making a plane by assigning it it's parameters
             Vector planeNormal = new Vector(0,1,0); // this will give a plane which direction is towards the direction of camera.
-            Vector planePoint = new Vector(0,-20,0);
+            Vector planePoint = new Vector(0,-50,0);
             Plane  plane1 = new Plane(planeNormal, planePoint, new Material(new SColor(1,1,1,1)));
 
             // making a disk by assigning it it's parameters
@@ -52,7 +52,7 @@ namespace randomImage
 
             //making a triangle
             Triangle triangle = new Triangle(new Vector(-10,0,0), new Vector(10,0,0), new Vector(0,10,0), new Material(new SColor(1,0,0,1), 0.25));
-            triangle.AddScaleToTransformationMatrix(new Vector(2,2,2));
+            //triangle.AddScaleToTransformationMatrix(new Vector(2,2,2));
             //triangle.AddRotationThroughYAxisToTransformationMatrix(180);
             // making a light i.e. a point light
             Light light1 = new Light(new Vector(20,30,-15) , 0.6, new SColor(1,1,1,1));
@@ -65,7 +65,11 @@ namespace randomImage
 
             // making a cylinder 
             Cylinder cylinder = new Cylinder(new Vector(0,0,0), new Vector(0,1,0), 1, new Material(new SColor(1,0,0,1)));
-            //cylinder.AddScaleToTransformationMatrix(new Vector(10,10,10));
+            cylinder.AddTranslationToTranformationMatrix(new Vector(0,100,0));
+            cylinder.AddScaleToTransformationMatrix(new Vector(10,10,10));
+
+            // defining a torus
+            Torus torus = new Torus(new Vector(1,1,1), new Vector(1,2,1), 3,1,new Material(new SColor(1,1,0,1)));
             
             // setting our camera position and direction of the camera
             Camera camera = new Camera(new Vector(0,0,-100), new Vector(0,0,0));
@@ -75,7 +79,7 @@ namespace randomImage
             //camera.useDOF(20, 10);
      
             // array for multiple shapes
-            Shape[] shapes = {sphere1,plane1,sphere2};
+            Shape[] shapes = {torus};
 
             // array for multiple lights
             Light[] lights = {light2,light1};

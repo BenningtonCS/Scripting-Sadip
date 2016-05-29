@@ -49,8 +49,8 @@ namespace randomImage
             Vector point = origin + direction * shape.DoesIntersect(origin, direction);
             Vector eye = origin - point;
             Vector normal = shape.NormalAtPoint(point);
-           // Vector reflectedRay = (-1) * eye + 2.0 * (normal * eye) * normal;
-            Vector reflectedRay = eye - 2.0 * (normal * eye) * normal;
+            Vector reflectedRay = (-1) * eye + 2.0 * (normal * eye) * normal;
+            //Vector reflectedRay = eye - 2.0 * (normal * eye) * normal;
 
             Ray ray = new Ray(point,reflectedRay);
             return ray;

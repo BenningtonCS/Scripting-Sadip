@@ -69,6 +69,7 @@
     <Compile Include="SColor.cs" />
     <Compile Include="Shape.cs" />
     <Compile Include="Sphere.cs" />
+    <Compile Include="Torus.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="Vector.cs" />
     <EmbeddedResource Include="Form1.resx">

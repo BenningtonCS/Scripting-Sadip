@@ -256,7 +256,7 @@ namespace randomImage
 
                 Vector normal = closestShape.NormalAtPoint(point);
 
-                // also changing the normal
+                // also transforming the normal of the shapes according to the transformation matrix
                 normal = Matrix4By4.Transpose(closestShape.inverseTransformMatrix) * normal;
 
                 // for multiple lighting
