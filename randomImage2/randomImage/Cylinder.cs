@@ -92,10 +92,40 @@ namespace randomImage
         // for finding the normal of the cylinder
         public override Vector NormalAtPoint(Vector point)
         {
+            /*
             // here making the y-component zero and normalizing it 
             // that is fixing the normal but we have to transfer the or scale to make the cylinder that we want to implement or use
             point.y = 0;
             return point.Normalize();
+            */
+
+            // above idea didn't work so trying to figure out the different approach
+            
+            //setting the epsilon
+            double epsilon = Math.Pow(10,-6);
+
+            // at first finding out the vertical axis of the given cylinder
+            Vector verticalAxis = (position - secondCenter).Normalize();
+
+            // check if the point is on the upper plane
+            double d1 = -(verticalAxis * position);
+            if (Math.Abs(verticalAxis * point + d1) <= epsilon)
+                return verticalAxis;
+
+            // check if the point is on the lower plane
+            double d2 = -((-1)*verticalAxis * secondCenter);
+
+            if (Math.Abs((-1) * verticalAxis * point + d2) <= epsilon)
+                return (-1)*(verticalAxis);
+
+            // finding the normal vector to the plane formed by two centers and the intersection point
+            Vector perpendicularVector = (point - secondCenter) % verticalAxis;
+
+            // the direction of the axis of the cylinder cross the above perpendicular vector will give me the normal
+            return (verticalAxis % perpendicularVector).Normalize();
+           
+            
         }
     }
-}
+    }
+

@@ -79,6 +79,10 @@ namespace randomImage
             if ((p5 + p6) < 0d)
                 return -1;
 */
+
+            //
+            if (Math.Pow(p4, 2) < 0)
+                p4 = 0;
             double epsilon = 0.0000001;
             // now calculating 4 t values
             double t1 = (-B) / (4 * A) - p4 / 2 - Math.Sqrt(p5 - p6) / 2;

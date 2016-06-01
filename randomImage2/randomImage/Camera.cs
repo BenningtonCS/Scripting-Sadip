@@ -14,14 +14,17 @@ namespace randomImage
         public double fov;
         public int numberOfSamples;
         public int numberOfJittered;
-        public int height = 600;
-        public int width = 600;
+        public int height = 700;
+        public int width = 700;
         public double pixelSize = 1;
 
+        public int rayDepth;
 
         private double apertureSize;
         private double focalLength;
         private bool DOFUsed;
+
+        private bool IsReflective;
 
 
 
@@ -29,11 +32,13 @@ namespace randomImage
         {
             this.position = position; // this is the location of the camera
             this.lookAt = lookAt; // this is the looking point of the perspective camera
-            this.fov = 52; // setting fov as 52 degree angle
+            this.fov = 60; // setting fov as 52 degree angle
             this.numberOfSamples = 1; // setting number of samples to be 1 as default
             this.numberOfJittered = 1; // setting number of jittered to be 1 as default
             //Calculate u, v, w from position and lookAt
             Vector cameraMoveVector = new Vector(0, 1, 0);
+
+            this.rayDepth = 5;
 
             //to make the camera to move 
             //checking whether the x and y coordinates of position of camera to be zero than giving it's camera move vector to be new vector that is (1,0,0)
@@ -172,7 +177,7 @@ namespace randomImage
                         
                           // adding all the color of the samples that is given for multi sampling
 
-                    samplingColor += TraceRay(ray, scene);
+                    samplingColor += TraceRay(ray, scene, rayDepth);
                 }
 
                 //taking the average of the color of those all samples
@@ -213,9 +218,19 @@ namespace randomImage
 
     }
 
-        SColor TraceRay(Ray ray, Scene scene)
+        SColor TraceRay(Ray ray, Scene scene, int rayDepth)
         {
+            int maximumNumberOfReflections = 10;
+
+            if (rayDepth == maximumNumberOfReflections)
+                return new SColor(0,0,0,0);
+
             SColor shapeColor = new SColor();
+
+            SColor reflectionColor = new SColor();
+
+            SColor averageReflectionColor = new SColor();
+
             Shape closestShape = scene.shapes[0]; // rendering multiple objects so searching for the closest shape to render
 
             double closestT = double.MaxValue; // shape which has closest T need to be rendered at first
@@ -290,15 +305,30 @@ namespace randomImage
                     Vector lightDriection = lightToPoint.Normalize(); // and then normalizing it to get the direction of that vector
                     double cosineAngle = -(lightDriection * normal); // finding the scalar value which gives the light intensity
 
+                    
+                    if (cosineAngle < 0)
+                        cosineAngle = 0;
+
                     // for specular highlight
                     Vector cameraToIntersectionPoint = (position - point).Normalize();
                     Vector reflectedRayDirection = (closestShape.material.ReflectedRay(ray.origin, ray.direction, closestShape).direction).Normalize();
-                    double specularFactor = Math.Pow((cameraToIntersectionPoint * reflectedRayDirection), closestShape.material.smoothness);
 
-                    if (cosineAngle < 0)
-                        cosineAngle = 0;
+                    if (rayDepth < maximumNumberOfReflections)
+                    {
+                        Ray reflectedRay = closestShape.material.ReflectedRay(point, lightDriection, closestShape);
+                        rayDepth++;
+                        reflectionColor = TraceRay(reflectedRay, scene, rayDepth); // recursive method
+                    }
+
+                    //averageReflectionColor = reflectionColor * (1 / rayDepth);
+                    //color = averageReflectionColor + color;
+
+
+                    double specularFactor = Math.Pow((cameraToIntersectionPoint * reflectedRayDirection), closestShape.material.smoothness);
                     if (specularFactor < 0)
                         specularFactor = 0;
+                 
+
                     if (cosineAngle >= 0 || specularFactor >= 0)
                     {
                         lightContribution = lightContribution + (light.lightColor * color * (cosineAngle*closestShape.material.diffuseCoefficient + specularFactor * closestShape.material.specularCoefficient) * light.Intensity);
@@ -306,7 +336,7 @@ namespace randomImage
                 }
 
                 //calculating color of the shape
-                shapeColor = lightContribution + (color * ambient);
+                shapeColor = lightContribution + (color * ambient) + closestShape.material.reflectionCoefficient * averageReflectionColor;
 
               
             }

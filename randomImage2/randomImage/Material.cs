@@ -14,15 +14,17 @@ namespace randomImage
         public double specularCoefficient;
         public double smoothness;
         public double diffuseCoefficient;
+       // public double rayDepth;
 
         public Material(SColor color)
         {
             this.color = color;
             this.ambient = .1; // making default ambient value to be 1
-            this.reflectionCoefficient = 1;
-            this.specularCoefficient = .5;
-            this.smoothness = 50;
-            this.diffuseCoefficient = .4;
+            this.reflectionCoefficient = .3;
+            this.specularCoefficient = .3; // .5
+            this.smoothness = 50; // 50
+            this.diffuseCoefficient = .3; // .4
+            //this.rayDepth = 10;
 
         }
 
@@ -47,10 +49,11 @@ namespace randomImage
         public Ray ReflectedRay(Vector origin, Vector direction, Shape shape) {
            // SColor reflectedColor = new SColor();
             Vector point = origin + direction * shape.DoesIntersect(origin, direction);
-            Vector eye = origin - point;
+            
+            Vector eye = (origin - point).Normalize();
             Vector normal = shape.NormalAtPoint(point);
             Vector reflectedRay = (-1) * eye + 2.0 * (normal * eye) * normal;
-            //Vector reflectedRay = eye - 2.0 * (normal * eye) * normal;
+            //Vector reflectedRay = (eye - 2.0 * (normal * eye) * normal).Normalize();
 
             Ray ray = new Ray(point,reflectedRay);
             return ray;
