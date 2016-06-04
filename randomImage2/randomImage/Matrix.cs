@@ -34,7 +34,7 @@ namespace randomImage
             return new Matrix(a.v1 - b.v1, a.v2 - b.v2, a.v3 - b.v3);
         }
 
-
+        // explicitly used in the Triangle class
         public double Determinant()
         {
             return ((v1.x * v2.y * v3.z) + (v2.x * v3.y *v1.z) + (v3.x * v1.y * v2.z) - (v3.x * v2.y * v1.z) - (v2.x * v1.y * v3.z) - (v1.x * v3.y * v2.z));

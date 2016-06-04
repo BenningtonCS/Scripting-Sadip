@@ -8,18 +8,22 @@ namespace randomImage
 {
     class Torus:Shape
     {
+        // I don't know why my torus is not working 
+        // Actually, I want to make a torus where
+        // users need to give two radii (minor and major radius) along with it's axis
+    
         public Vector axis;
         public double majorRadius;
         public double minorRadius;
 
         public Torus(Vector position, Vector axis, double majorRadius, double minorRadius, Material material) :base(position, material){
             this.position = position;
-            this.axis = axis.Normalize(); // normalizing the of the given torus
+            this.axis = axis.Normalize(); // normalizing the axis of the given torus
             this.majorRadius = majorRadius;
             this.minorRadius = minorRadius;
             this.material = material;
         }
-        
+
         // using the efficient ray torus intersection 
         // taking help from the following link
         //http://users.wowway.com/~phkahler/torus.pdf
@@ -80,16 +84,21 @@ namespace randomImage
                 return -1;
 */
 
-            //
-            if (Math.Pow(p4, 2) < 0)
-                p4 = 0;
+            //since p4 value is returning NAN always so providing some condition so that it'd be fixed
+
+            /*if (Math.Pow(p4, 2) < 0)
+                p4 = 0;*/
+
+            
             double epsilon = 0.0000001;
+
             // now calculating 4 t values
+            // want to check in every positive t values and adding it to container
             double t1 = (-B) / (4 * A) - p4 / 2 - Math.Sqrt(p5 - p6) / 2;
             if(t1 > epsilon)
                 tValues[0] = t1;
             double t2 = (-B) / (4 * A) - p4 / 2 + Math.Sqrt(p5 - p6) / 2;
-            //if(t2 > epsilon)
+            if(t2 > epsilon)
                 tValues[1] = t2;
             double t3 = (-B) / (4 * A) + p4 / 2 - Math.Sqrt(p5 + p6) / 2;
             if(t3 > epsilon)
@@ -98,19 +107,20 @@ namespace randomImage
             if(t4 > epsilon)
                 tValues[3] = t4;
 
-            double t = tValues.Min();
+            double t = tValues.Min(); // at last finding put the minimum t value from all the positive t values
 
             return t;
         }
 
+        // finding out the normal of the torus 
         public override Vector NormalAtPoint(Vector point)
         {
-            // 
-            double y = (point - position) * axis;
-            Vector D = (point - position) - y * axis;
-            Vector X = D.Normalize();
-            Vector n = point - position - X * majorRadius;
-            Vector normal = n.Normalize();
+            // dot product of given axis of the torus and posiition vector from position of the torus to the given point of intersection
+            double dotAxisWithPositionVector = (point - position) * axis;
+            Vector difference = (point - position) - (dotAxisWithPositionVector * axis);
+            Vector differenceNormalization = difference.Normalize(); // normalizing because we need direction (that is direction)
+            Vector n = point - position - (differenceNormalization * majorRadius); // finding out the normal
+            Vector normal = n.Normalize(); // normalizing the normal
             return normal;
         }
     }

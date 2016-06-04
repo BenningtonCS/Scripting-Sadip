@@ -25,11 +25,11 @@ namespace randomImage
             Vector sphereCenter = new Vector(0,0,0);
             Material material1 = new Material(new SColor(1,0,0,1));
             Sphere sphere1 = new Sphere(30, material1, sphereCenter);
-            sphere1.AddScaleToTransformationMatrix(new Vector(1,2,1));
+            sphere1.AddScaleToTransformationMatrix(new Vector(1,4,1));
             //sphere1.AddTranslationToTranformationMatrix(new Vector(-10,0,0));
             //sphere1.AddRotationThroughAllAxisToTransformationMatrix(0,0,0);
             //sphere1.AddRotationThroughXAxisToTransformationMatrix(90);
-            //sphere1.AddRotationThroughZAxisToTransformationMatrix(145);
+            sphere1.AddRotationThroughZAxisToTransformationMatrix(145);
           
 
             // making a sphere by assigning it it's parameters
@@ -38,12 +38,12 @@ namespace randomImage
             //sphere2.material.smoothness = 100;
 
             //making a sphere by assigning it it's parameters
-            Sphere sphere3 = new Sphere(30, new Material(new SColor(0,0,1,1)), new Vector(-100,100,0));
+            Sphere sphere3 = new Sphere(60, new Stripes(new SColor(0,0,1,1), new SColor(1,0,1,1)), new Vector(-100,100,0));
 
             // making a plane by assigning it it's parameters
             Vector planeNormal = new Vector(0,1,0); // this will give a plane which direction is towards the direction of camera.
             Vector planePoint = new Vector(0,-10,0);
-            Plane  plane1 = new Plane(planeNormal, planePoint, new Material(new SColor(1,1,1,1)));
+            Plane  plane1 = new Plane(planeNormal, planePoint, new Stripes(new SColor(1,1,1,1), new SColor(1,1,0,1)));
 
             // making a disk by assigning it it's parameters
             Vector diskNormal = new Vector(0,1,0); // plane will be vertical  
@@ -71,7 +71,7 @@ namespace randomImage
 
             // defining a torus
             Torus torus = new Torus(new Vector(1,1,1), new Vector(1,2,1), 3,1,new Material(new SColor(1,1,0,1)));
-            
+
             // setting our camera position and direction of the camera
             Camera camera = new Camera(new Vector(100,0,-500), new Vector(0,0,0));
             //camera.fov = 36;
@@ -80,7 +80,7 @@ namespace randomImage
             //camera.useDOF(20, 10);
      
             // array for multiple shapes
-            Shape[] shapes = {sphere1,plane1};
+            Shape[] shapes = {plane1, sphere3};
 
             // array for multiple lights
             Light[] lights = {light1,light2};

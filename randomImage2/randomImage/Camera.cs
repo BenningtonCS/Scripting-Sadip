@@ -38,7 +38,7 @@ namespace randomImage
             //Calculate u, v, w from position and lookAt
             Vector cameraMoveVector = new Vector(0, 1, 0);
 
-            this.rayDepth = 5;
+            //this.rayDepth = 5;
 
             //to make the camera to move 
             //checking whether the x and y coordinates of position of camera to be zero than giving it's camera move vector to be new vector that is (1,0,0)
@@ -101,6 +101,8 @@ namespace randomImage
             {
                 for (int j = 0; j < width; j++)
                 {
+
+                   
                     // for getting random values from 0 to 1 for super sampling or random sampling
                     Random randomNumber = new Random();
 
@@ -177,7 +179,7 @@ namespace randomImage
                         
                           // adding all the color of the samples that is given for multi sampling
 
-                    samplingColor += TraceRay(ray, scene, rayDepth);
+                    samplingColor += TraceRay(ray, scene, 0);
                 }
 
                 //taking the average of the color of those all samples
@@ -222,7 +224,7 @@ namespace randomImage
         {
             int maximumNumberOfReflections = 10;
 
-            if (rayDepth == maximumNumberOfReflections)
+            if (rayDepth >= maximumNumberOfReflections)
                 return new SColor(0,0,0,0);
 
             SColor shapeColor = new SColor();
@@ -240,12 +242,13 @@ namespace randomImage
             foreach (Shape shape in scene.shapes)
             {
                 //transforming the ray origin along with the given tranformation matrices
+                // origin is transformed like the point tranformation whereas ray direction is transformed like the vector transformation
 
                 Vector newOrigin = FindNewPoint(shape.inverseTransformMatrix, ray.origin);
                 Vector newDirection = (shape.inverseTransformMatrix * ray.direction).Normalize();
 
-                double t = shape.DoesIntersect(newOrigin, newDirection);
-                if ((t < closestT) && (t >= 0))
+                double t = shape.DoesIntersect(newOrigin, newDirection); // passing transformed origin and transformed direction 
+                if ((t < closestT) && (t >= 0.0001))
                 {
                     closestT = t;
                     closestShape = shape;
@@ -258,13 +261,14 @@ namespace randomImage
 
             if (closestShape.DoesIntersect(closeOrigin, closeDirection) >= 0) // checking whether the ray hits the sphere or not
             {
-                SColor color = closestShape.material.color;
+                Vector point = closeOrigin + (closeDirection * closestT); // point of intersection
+
+                SColor color = closestShape.material.ColorAtPoint(point);
                 double ambient = closestShape.material.ambient;
                 double specularCoefficient = closestShape.material.specularCoefficient;
 
                 SColor lightContribution = new SColor();
 
-                Vector point = closeOrigin + (closeDirection * closestT); // point of intersection
 
                 //transforming the point of intersection according to the transformation matrices
                 point = FindNewPoint(closestShape.transformMatrix, point);
@@ -313,12 +317,9 @@ namespace randomImage
                     Vector cameraToIntersectionPoint = (position - point).Normalize();
                     Vector reflectedRayDirection = (closestShape.material.ReflectedRay(ray.origin, ray.direction, closestShape).direction).Normalize();
 
-                    if (rayDepth < maximumNumberOfReflections)
-                    {
-                        Ray reflectedRay = closestShape.material.ReflectedRay(point, lightDriection, closestShape);
-                        rayDepth++;
-                        reflectionColor = TraceRay(reflectedRay, scene, rayDepth); // recursive method
-                    }
+                    
+                   
+                    
 
                     //averageReflectionColor = reflectionColor * (1 / rayDepth);
                     //color = averageReflectionColor + color;
@@ -334,13 +335,19 @@ namespace randomImage
                         lightContribution = lightContribution + (light.lightColor * color * (cosineAngle*closestShape.material.diffuseCoefficient + specularFactor * closestShape.material.specularCoefficient) * light.Intensity);
                     }
                 }
-
-                //calculating color of the shape
-                shapeColor = lightContribution + (color * ambient) + closestShape.material.reflectionCoefficient * averageReflectionColor;
-
-              
+                /*
+                if (rayDepth < maximumNumberOfReflections)
+                {
+                    Ray reflectedRay = closestShape.material.ReflectedRay(closeOrigin, closeDirection, closestShape);
+                    reflectionColor = TraceRay(reflectedRay, scene, rayDepth + 1); // recursive method
+                }
+                */
+                shapeColor = lightContribution + (color * ambient);
+                
             }
-            return shapeColor;
+
+           
+            return (shapeColor + closestShape.material.reflectionCoefficient * reflectionColor);
 
         }
 }

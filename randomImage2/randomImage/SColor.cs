@@ -29,7 +29,7 @@ namespace randomImage
 
         // operator overloading * sign for color and scalar number
         public static SColor operator *(SColor color, double s) {
-            return new SColor(color.r * s, color.g * s, color.b * s, color.a * s); // double not multiplying the alpha of a color
+            return new SColor(color.r * s, color.g * s, color.b * s, 1); // double not multiplying the alpha of a color
         }
 
         //operator overloading * sign for color and scalar nuber 
@@ -39,7 +39,7 @@ namespace randomImage
 
         //operator overloading / sign for color and scalar number
         public static SColor operator /(SColor color, double s) {
-            return new SColor(color.r / s, color.g / s, color.b / s, color.a / s);
+            return new SColor(color.r / s, color.g / s, color.b / s, 1);
         }
 
         //operator overloading / sign for color and scalar number
@@ -50,12 +50,12 @@ namespace randomImage
 
         // operator overloading + sign for addition of two color
         public static SColor operator +(SColor x, SColor y) {
-            return new SColor(x.r + y.r, x.g + y.g, x.b + y.b, x.a + y.a); // for addition of two colors only alpha of the first color is returned rather than additing those two
+            return new SColor(x.r + y.r, x.g + y.g, x.b + y.b, 1); // for addition of two colors only alpha of the first color is returned rather than additing those two
         }
 
         // operator overloading * sign for dot product of two color
         public static SColor operator *(SColor x, SColor y) {
-            return new SColor(x.r * y.r, x.g * y.g, x.b * y.b, x.a * y.a);
+            return new SColor(x.r * y.r, x.g * y.g, x.b * y.b, 1);
         }
         
 
@@ -63,10 +63,10 @@ namespace randomImage
         public int GetRedColor()
         {
             // checking whether the value of r goes beyond the max 255 or not
-            if (r < 0)
+            if (r <= 0)
             {
                 return 0;
-            } else if (r > 1)
+            } else if (r >= 1)
             {
                 return 255;
             }
@@ -75,11 +75,11 @@ namespace randomImage
 
         public int GetGreenColor() {
             // checking whether the value of g goes beyond the max 255 or not
-            if (g < 0)
+            if (g <= 0)
             {
                 return 0;
             }
-            else if (g > 1)
+            else if (g >= 1)
             {
                 return 255;
             }
@@ -88,11 +88,11 @@ namespace randomImage
 
         public int GetBlueColor() {
             // checking whether the value of b goes beyond the max 255 or not
-            if (b < 0)
+            if (b <= 0)
             {
                 return 0;
             }
-            else if (b > 1)
+            else if (b >= 1)
             {
                 return 255;
             }

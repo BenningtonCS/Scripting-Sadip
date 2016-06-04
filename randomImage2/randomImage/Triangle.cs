@@ -49,9 +49,14 @@ namespace randomImage
         // to find the normal of a triangle
         public override Vector NormalAtPoint(Vector point)
         {
+            // finding out the first position vector
             Vector onePointToAnother = (secondPoint - position);
+
+            // another position vector of the triangle
             Vector anotherPointToAnother = (thirdPoint - position);
-            Vector normal = (onePointToAnother % anotherPointToAnother).Normalize();
+
+            // and then finding out the normal by cross product of those two position vectors
+            Vector normal = (onePointToAnother % anotherPointToAnother).Normalize(); // and so normalizing the normal
             return normal;
         }
 

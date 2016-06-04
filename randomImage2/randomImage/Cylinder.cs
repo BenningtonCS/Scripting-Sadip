@@ -8,6 +8,9 @@ namespace randomImage
 {
     class Cylinder:Shape
     {
+        // there is some problem with the height of the cylinder that is the torso
+
+
         public Vector secondCenter;
         public double radius;
 
@@ -92,6 +95,8 @@ namespace randomImage
         // for finding the normal of the cylinder
         public override Vector NormalAtPoint(Vector point)
         {
+            // following Justin trick 
+            // which I found really cool and interesting too
             /*
             // here making the y-component zero and normalizing it 
             // that is fixing the normal but we have to transfer the or scale to make the cylinder that we want to implement or use
@@ -99,7 +104,7 @@ namespace randomImage
             return point.Normalize();
             */
 
-            // above idea didn't work so trying to figure out the different approach
+            // but still above idea didn't work so trying to figure out the different approach
             
             //setting the epsilon
             double epsilon = Math.Pow(10,-6);
